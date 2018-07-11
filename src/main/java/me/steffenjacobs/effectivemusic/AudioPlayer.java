@@ -42,6 +42,7 @@ public class AudioPlayer {
 	}
 
 	private BasicPlayer player;
+	private double volume = 1;
 
 	public void playAudio(String path) throws BasicPlayerException {
 		if (player == null) {
@@ -54,6 +55,7 @@ public class AudioPlayer {
 			throw new BasicPlayerException(e);
 		}
 		player.play();
+		player.setGain(volume);
 	}
 
 	public void stop() throws BasicPlayerException {
@@ -80,4 +82,16 @@ public class AudioPlayer {
 		}
 		return Status.UNKNOWN;
 	}
+
+	public double getGain() {
+		return volume;
+	}
+
+	public void setGain(double value) throws BasicPlayerException {
+		volume = value;
+		if (player != null) {
+			player.setGain(value);
+		}
+	}
+
 }

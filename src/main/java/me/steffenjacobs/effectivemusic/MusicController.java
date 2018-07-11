@@ -47,4 +47,16 @@ public class MusicController {
 		return new ResponseEntity<String>("status: " + status, HttpStatus.OK);
 	}
 
+	@GetMapping(value = "/music/gain", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public ResponseEntity<String> getGain() {
+		double gain = audioPlayer.getGain();
+		return new ResponseEntity<String>("gain: " + gain, HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/music/gain", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public ResponseEntity<String> setGain(double gain) throws BasicPlayerException {
+		audioPlayer.setGain(gain);
+		return new ResponseEntity<String>("gain: " + gain, HttpStatus.OK);
+	}
+
 }
