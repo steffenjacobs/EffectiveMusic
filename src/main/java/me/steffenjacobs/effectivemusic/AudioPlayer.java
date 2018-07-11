@@ -17,7 +17,7 @@ import me.steffenjacobs.effectivemusic.util.ImprovedBasicPlayer;
 
 /** @author Steffen Jacobs */
 @Component
-@Scope("prototype")
+@Scope("singleton")
 public class AudioPlayer {
 
 	static enum Status {
