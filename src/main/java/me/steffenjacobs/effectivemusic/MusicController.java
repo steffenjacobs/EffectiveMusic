@@ -18,13 +18,20 @@ public class MusicController {
 
 	@Autowired
 	AudioPlayer audioPlayer;
-	
+
 	@Autowired
 	AudioEffectManager audioEffectManager;
+	
+	@Autowired
+	YoutubeManager youtubeManager;
 
 	@PostMapping(value = "/music/play", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ResponseEntity<String> playSong(String path) throws BasicPlayerException {
-		audioPlayer.playAudio(path);
+		if (path.startsWith("https://www.youtube.com/watch?v=")) {
+			youtubeManager.playYoutube(path);
+		} else {
+			audioPlayer.playAudio(path);
+		}
 		return new ResponseEntity<String>("Playing file " + path, HttpStatus.ACCEPTED);
 	}
 
@@ -80,7 +87,7 @@ public class MusicController {
 	public ResponseEntity<TrackDTO> getTrackInfo() throws BasicPlayerException {
 		return new ResponseEntity<TrackDTO>(audioPlayer.getTrackInformation(), HttpStatus.OK);
 	}
-	
+
 	@PostMapping(value = "/music/fadeTo", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ResponseEntity<String> fadeTo(double gain, long millis) throws BasicPlayerException {
 		audioEffectManager.fadeTo(gain, millis);

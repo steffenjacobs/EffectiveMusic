@@ -62,6 +62,13 @@
 			<version>2.0.3</version>
 		</dependency>
 
+		<!-- Youtube Download -->
+		<dependency>
+			<groupId>com.github.axet</groupId>
+			<artifactId>vget</artifactId>
+			<version>1.2.6</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

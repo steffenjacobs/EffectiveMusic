@@ -24,6 +24,7 @@ public class AudioEffectManager {
 	private boolean fading = false;
 
 	public void fadeTo(final double targetGain, long fadelengthInMilis) {
+		
 		if (fading) {
 			throw new RuntimeException("Already fading.");
 		}
