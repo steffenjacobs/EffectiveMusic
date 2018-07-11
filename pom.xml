@@ -43,13 +43,18 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/com.googlecode.soundlibs/basicplayer -->
+		<!-- Javazoom Player -->
 		<dependency>
 			<groupId>com.googlecode.soundlibs</groupId>
 			<artifactId>basicplayer</artifactId>
 			<version>3.0.0.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.jflac</groupId>
+			<artifactId>jflac-codec</artifactId>
+			<version>1.5.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>

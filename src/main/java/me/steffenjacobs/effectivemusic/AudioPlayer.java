@@ -1,13 +1,12 @@
 package me.steffenjacobs.effectivemusic;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
+import java.io.File;
+import java.io.IOException;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import javazoom.jlgui.basicplayer.BasicPlayer;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
+import me.steffenjacobs.effectivemusic.domain.TrackDTO;
+import me.steffenjacobs.effectivemusic.util.ImprovedBasicPlayer;
 
 /** @author Steffen Jacobs */
 @Component
@@ -41,19 +40,18 @@ public class AudioPlayer {
 		}
 	}
 
-	private BasicPlayer player;
+	private ImprovedBasicPlayer player;
+
 	private double volume = 1;
+	private String currentPath = "";
 
 	public void playAudio(String path) throws BasicPlayerException {
 		if (player == null) {
-			player = new BasicPlayer();
+			player = new ImprovedBasicPlayer();
 		}
+		currentPath = path;
 
-		try {
-			player.open(new URL("file:///" + path));
-		} catch (MalformedURLException e) {
-			throw new BasicPlayerException(e);
-		}
+		player.open(new File(path));
 		player.play();
 		player.setGain(volume);
 	}
@@ -94,4 +92,15 @@ public class AudioPlayer {
 		}
 	}
 
+	public long getFramePosition() {
+		return player.getFramePosition();
+	}
+
+	public long getMicrosecondPosition() {
+		return player.getMicrosecondPosition();
+	}
+
+	public void setPosition(long position) throws BasicPlayerException {
+		player.seek(position);
+	}
 }

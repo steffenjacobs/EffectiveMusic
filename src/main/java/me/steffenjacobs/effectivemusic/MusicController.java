@@ -1,12 +1,16 @@
 package me.steffenjacobs.effectivemusic;
 
+import java.io.FileNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
 import me.steffenjacobs.effectivemusic.AudioPlayer.Status;
 
@@ -18,7 +22,7 @@ public class MusicController {
 	AudioPlayer audioPlayer;
 
 	@PostMapping(value = "/music/play", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public ResponseEntity<String> playSong(String path) throws BasicPlayerException {
+	public ResponseEntity<String> playSong(String path) throws BasicPlayerException, FileNotFoundException, JavaLayerException {
 		audioPlayer.playAudio(path);
 		return new ResponseEntity<String>("Playing file " + path, HttpStatus.ACCEPTED);
 	}
@@ -36,7 +40,7 @@ public class MusicController {
 	}
 
 	@PostMapping(value = "/music/resume", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public ResponseEntity<String> resumeSong() throws BasicPlayerException {
+	public ResponseEntity<String> resumeSong() throws BasicPlayerException, JavaLayerException {
 		audioPlayer.resume();
 		return new ResponseEntity<String>("Resumed", HttpStatus.OK);
 	}
@@ -59,4 +63,15 @@ public class MusicController {
 		return new ResponseEntity<String>("gain: " + gain, HttpStatus.OK);
 	}
 
+	@GetMapping(value = "/music/position", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public ResponseEntity<String> getPosition() throws BasicPlayerException {
+		long position = audioPlayer.getMicrosecondPosition();
+		return new ResponseEntity<String>("position: " + position / 1000000 + "s", HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/music/position", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public ResponseEntity<String> setPosition(long position) throws BasicPlayerException {
+		audioPlayer.setPosition(position);
+		return new ResponseEntity<String>("position: " + position, HttpStatus.OK);
+	}
 }
