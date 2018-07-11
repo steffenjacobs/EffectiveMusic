@@ -30,6 +30,8 @@ import javazoom.jlgui.basicplayer.BasicPlayerEventLauncher;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
 import javazoom.spi.PropertiesContainer;
+
+import org.jflac.sound.spi.RingedAudioInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tritonus.share.sampled.TAudioFormat;
@@ -687,7 +689,7 @@ public class ImprovedBasicPlayer implements BasicController, Runnable
     {
     	System.out.println("skipping...");
         long totalSkipped = 0;
-        if (m_dataSource instanceof File)
+        if (m_dataSource instanceof File && !(m_audioInputStream instanceof RingedAudioInputStream))
         {
         	System.out.println("skip");
             log.info("Bytes to skip : " + bytes);
