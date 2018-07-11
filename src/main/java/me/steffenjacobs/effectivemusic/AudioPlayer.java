@@ -2,6 +2,13 @@ package me.steffenjacobs.effectivemusic;
 
 import java.io.File;
 import java.io.IOException;
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.exceptions.CannotReadException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+import org.jaudiotagger.tag.Tag;
+import org.jaudiotagger.tag.TagException;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
@@ -102,5 +109,15 @@ public class AudioPlayer {
 
 	public void setPosition(long position) throws BasicPlayerException {
 		player.seek(position);
+	}
+
+	public TrackDTO getTrackInformation() throws BasicPlayerException {
+		try {
+			AudioFile f = AudioFileIO.read(new File(currentPath));
+			Tag tag = f.getTag();
+			return new TrackDTO(tag);
+		} catch (CannotReadException | IOException | TagException | ReadOnlyFileException | InvalidAudioFrameException e) {
+			throw new BasicPlayerException(e);
+		}
 	}
 }

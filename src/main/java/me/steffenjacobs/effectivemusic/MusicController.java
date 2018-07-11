@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
 import me.steffenjacobs.effectivemusic.AudioPlayer.Status;
+import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 
 /** @author Steffen Jacobs */
 @Controller
@@ -74,4 +75,10 @@ public class MusicController {
 		audioPlayer.setPosition(position);
 		return new ResponseEntity<String>("position: " + position, HttpStatus.OK);
 	}
+
+	@GetMapping(value = "/music/info", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public ResponseEntity<TrackDTO> getTrackInfo() throws BasicPlayerException {
+		return new ResponseEntity<TrackDTO>(audioPlayer.getTrackInformation(), HttpStatus.OK);
+	}
+
 }
