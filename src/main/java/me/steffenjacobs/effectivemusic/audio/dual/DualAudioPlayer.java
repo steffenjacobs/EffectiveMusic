@@ -1,6 +1,8 @@
 package me.steffenjacobs.effectivemusic.audio.dual;
 
 import org.jaudiotagger.tag.TagException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,6 +18,8 @@ import uk.co.caprica.vlcj.player.MediaPlayerEventListener;
 // TODO
 public class DualAudioPlayer implements AudioPlayer, InitializingBean {
 
+	private static Logger LOG = LoggerFactory.getLogger(DualAudioPlayer.class);
+
 	@Autowired
 	VLCMediaPlayerAdapter player1;
 
@@ -26,7 +30,7 @@ public class DualAudioPlayer implements AudioPlayer, InitializingBean {
 
 	private VLCMediaPlayerAdapter switchPlayer() {
 		currentPlayer = getOtherPlayer();
-		System.out.println("switched player to " + (currentPlayer == player1 ? "1" : "2"));
+		LOG.info("switched player to {}", (currentPlayer == player1 ? "1" : "2"));
 		return currentPlayer;
 	}
 

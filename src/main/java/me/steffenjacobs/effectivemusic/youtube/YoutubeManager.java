@@ -6,6 +6,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +22,8 @@ import me.steffenjacobs.effectivemusic.audio.VLCMediaPlayerAdapter;
 
 @Component
 public class YoutubeManager {
+
+	private static final Logger LOG = LoggerFactory.getLogger(YoutubeManager.class);
 
 	@Autowired
 	VLCMediaPlayerAdapter vlcPlayer;
@@ -42,7 +46,7 @@ public class YoutubeManager {
 			}
 		});
 
-		System.out.println("Title: " + videoinfo.getTitle());
+		LOG.info("Title: {}", videoinfo.getTitle());
 		List<VideoFileInfo> list = videoinfo.getInfo();
 		if (list != null) {
 			for (VideoFileInfo d : list) {
