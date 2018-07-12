@@ -79,17 +79,17 @@ public class JavazoomAudioPlayer implements AudioPlayer {
 		}
 	}
 
-	@Override
+//	@Override
 	public long getFramePosition() {
 		return player.getFramePosition();
 	}
 
-	@Override
+//	@Override
 	public long getMicrosecondPosition() {
 		return player.getMicrosecondPosition();
 	}
 
-	@Override
+//	@Override
 	public void setPosition(long position) throws BasicPlayerException {
 		player.seek(position);
 	}
@@ -103,5 +103,17 @@ public class JavazoomAudioPlayer implements AudioPlayer {
 		} catch (CannotReadException | IOException | TagException | ReadOnlyFileException | InvalidAudioFrameException e) {
 			throw new TagException(e);
 		}
+	}
+
+	@Override
+	public float getPosition() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setPosition(float position) throws BasicPlayerException {
+		// TODO Auto-generated method stub
+		
 	}
 }

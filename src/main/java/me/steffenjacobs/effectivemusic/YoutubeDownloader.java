@@ -24,8 +24,6 @@ import com.github.axet.wget.info.DownloadInfo.Part;
 import com.github.axet.wget.info.URLInfo.States;
 import com.github.axet.wget.info.ex.DownloadInterruptedError;
 
-import javazoom.jlgui.basicplayer.BasicPlayerException;
-
 /** @author Steffen Jacobs */
 
 @Component
@@ -35,7 +33,7 @@ public class YoutubeDownloader {
 	private Mp4ToMp3Converter mp4ToMp3Converter;
 
 	@Autowired
-	JavazoomAudioPlayer javazoomAudioPlayer;
+	VLCMediaPlayerAdapter vlcPlayer;
 
 	private String downloadYoutube(String url) {
 		DirectMultipart.THREAD_COUNT = 8;
@@ -82,11 +80,7 @@ public class YoutubeDownloader {
 	public void playYoutube(String path) {
 		String title = downloadYoutube(path);
 		String newPath = mp4ToMp3Converter.convertToMp3("C:\\Temp\\" + title + ".webm");
-		try {
-			javazoomAudioPlayer.playAudio(newPath);
-		} catch (BasicPlayerException e) {
-			e.printStackTrace();
-		}
+		vlcPlayer.playAudio(newPath);
 
 	}
 

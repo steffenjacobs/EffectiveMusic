@@ -23,7 +23,7 @@ import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
 /** @author Steffen Jacobs */
 
-@Component
+@Component("vlcPlayer")
 @Scope("singleton")
 public class VLCMediaPlayerAdapter implements AudioPlayer {
 
@@ -97,27 +97,22 @@ public class VLCMediaPlayerAdapter implements AudioPlayer {
 		return mediaPlayer.getVolume();
 	}
 
+	/**@param value: volume between 0 and 200*/
 	@Override
 	public void setGain(double value) {
 		initIfNecessary();
 		mediaPlayer.setVolume((int) value);
 	}
-
+	
 	@Override
-	public long getFramePosition() {
-		// TODO Auto-generated method stub
-		return 0;
+	public float getPosition() {
+		return mediaPlayer.getPosition();
 	}
 
+	/**@param position position in the track between 0 and 1*/
 	@Override
-	public long getMicrosecondPosition() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setPosition(long position) {
-		// TODO Auto-generated method stub
+	public void setPosition(float position) {
+		mediaPlayer.setPosition(position);
 	}
 
 	@Override

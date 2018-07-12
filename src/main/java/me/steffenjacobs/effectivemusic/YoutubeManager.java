@@ -20,7 +20,7 @@ import com.github.axet.vget.info.VideoInfo;
 public class YoutubeManager {
 
 	@Autowired
-	VLCMediaPlayerAdapter vlcMediaPlayerAdapter;
+	VLCMediaPlayerAdapter vlcPlayer;
 
 	public String playYoutube(String url) throws MalformedURLException {
 
@@ -45,7 +45,7 @@ public class YoutubeManager {
 		if (list != null) {
 			for (VideoFileInfo d : list) {
 				if (d.getContentType().equals("audio/webm")) {
-					vlcMediaPlayerAdapter.playFromUrl(d.getSource());
+					vlcPlayer.playFromUrl(d.getSource());
 				}
 			}
 		}

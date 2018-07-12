@@ -22,11 +22,9 @@ public interface AudioPlayer {
 
 	void setGain(double value) throws BasicPlayerException;
 
-	long getFramePosition();
+	float getPosition();
 
-	long getMicrosecondPosition();
-
-	void setPosition(long position) throws BasicPlayerException;
+	void setPosition(float position) throws BasicPlayerException;
 
 	TrackDTO getTrackInformation() throws TagException;
 

@@ -13,13 +13,15 @@ import javazoom.jlgui.basicplayer.BasicPlayerException;
 /** @author Steffen Jacobs */
 @Component
 @Scope("singleton")
-@DependsOn("javazoomAudioPlayer")
+@DependsOn("vlcPlayer")
 public class AudioEffectManager {
 
 	private static final long TIMER_INTERVAL_MILLIS = 100;
+	
+	private static double UPPER_LIMITE = 200;
 
 	@Autowired
-	JavazoomAudioPlayer javazoomAudioPlayer;
+	VLCMediaPlayerAdapter vlcPlayer;
 
 	private boolean fading = false;
 
@@ -30,12 +32,12 @@ public class AudioEffectManager {
 		}
 		fading = true;
 
-		final double initialGain = javazoomAudioPlayer.getGain();
+		final double initialGain = vlcPlayer.getGain();
 		if (targetGain == initialGain) {
 			return;
 		}
 		final long steps = fadelengthInMilis / TIMER_INTERVAL_MILLIS;
-		final AudioPlayer player = javazoomAudioPlayer;
+		final AudioPlayer player = vlcPlayer;
 		boolean fadeUp = targetGain - initialGain > 0;
 		final Timer t = new Timer();
 		t.scheduleAtFixedRate(new TimerTask() {
@@ -45,7 +47,7 @@ public class AudioEffectManager {
 			public void run() {
 				currentGain += (targetGain - initialGain) / steps;
 				try {
-					player.setGain(currentGain < 0 ? 0 : currentGain > 1 ? 1 : currentGain);
+					player.setGain(currentGain < 0 ? 0 : currentGain > UPPER_LIMITE ? UPPER_LIMITE : currentGain);
 
 					if ((fadeUp && currentGain >= targetGain) || (!fadeUp && currentGain <= targetGain)) {
 						t.cancel();
