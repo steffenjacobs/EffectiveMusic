@@ -16,6 +16,7 @@ import me.steffenjacobs.effectivemusic.audio.AudioEffectManager;
 import me.steffenjacobs.effectivemusic.audio.VLCMediaPlayerAdapter;
 import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
+import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
 import me.steffenjacobs.effectivemusic.youtube.YoutubeManager;
 
 /** @author Steffen Jacobs */
@@ -30,15 +31,17 @@ public class MusicController {
 
 	@Autowired
 	YoutubeManager youtubeManager;
+	
+	@Autowired
+	PlaylistManager playlistManager;
 
 	@PostMapping(value = "/music/play", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ResponseEntity<String> playSong(String path) throws MalformedURLException, BasicPlayerException {
+		playlistManager.clearPlaylist();
 		if (path.startsWith("https://www.youtube.com/watch?v=")) {
-			vlcPlayer.stop();
-			youtubeManager.playYoutube(path);
+			playlistManager.queue(new TrackMetadata(youtubeManager.getPlaybackUrl(path).toString()));
 		} else {
-			vlcPlayer.playAudio(path);
-			// TODO: Spotify
+			playlistManager.queue(new TrackMetadata(path));
 		}
 		return new ResponseEntity<String>("Playing file " + path, HttpStatus.ACCEPTED);
 	}

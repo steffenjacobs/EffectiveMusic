@@ -107,4 +107,11 @@ public class PlaylistManager {
 			}
 		});
 	}
+
+	public void clearPlaylist() {
+		skip.set(true);
+		this.playlist.clear();
+		vlcPlayer.stop();
+		skip.set(false);
+	}
 }
