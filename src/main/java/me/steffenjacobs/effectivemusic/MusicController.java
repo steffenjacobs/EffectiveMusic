@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javazoom.jlgui.basicplayer.BasicPlayerException;
-import me.steffenjacobs.effectivemusic.JavazoomAudioPlayer.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 
 /** @author Steffen Jacobs */

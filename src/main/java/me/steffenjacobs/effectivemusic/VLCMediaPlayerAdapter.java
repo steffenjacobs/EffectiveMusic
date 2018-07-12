@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 import com.sun.jna.NativeLibrary;
 
 import javazoom.jlgui.basicplayer.BasicPlayerException;
-import me.steffenjacobs.effectivemusic.JavazoomAudioPlayer.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 import uk.co.caprica.vlcj.component.AudioMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.MediaPlayer;
@@ -37,6 +36,8 @@ public class VLCMediaPlayerAdapter implements AudioPlayer {
 
 	private String currentPath = "";
 
+	private Status status = Status.UNKNOWN;
+
 	private void initIfNecessary() {
 		if (!initialized) {
 			NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), NATIVE_LIBRARY_SEARCH_PATH);
@@ -51,6 +52,7 @@ public class VLCMediaPlayerAdapter implements AudioPlayer {
 			mediaPlayer.stop();
 		}
 		mediaPlayer.playMedia(url.toString());
+		status = Status.PLAYING;
 	}
 
 	@Override
@@ -61,30 +63,33 @@ public class VLCMediaPlayerAdapter implements AudioPlayer {
 		}
 		mediaPlayer.playMedia(path);
 		currentPath = path;
+		status = Status.PLAYING;
 	}
 
 	@Override
 	public void stop() throws BasicPlayerException {
 		initIfNecessary();
 		mediaPlayer.stop();
+		status = Status.STOPPED;
 	}
 
 	@Override
 	public void pause() throws BasicPlayerException {
 		initIfNecessary();
 		mediaPlayer.pause();
+		status = Status.PAUSED;
 	}
 
 	@Override
 	public void resume() throws BasicPlayerException {
 		initIfNecessary();
 		mediaPlayer.start();
+		status = Status.PLAYING;
 	}
 
 	@Override
 	public Status getStatus() {
-		// TODO Auto-generated method stub
-		return null;
+		return status;
 	}
 
 	@Override

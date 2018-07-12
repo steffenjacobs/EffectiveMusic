@@ -1,7 +1,6 @@
 package me.steffenjacobs.effectivemusic;
 
 import javazoom.jlgui.basicplayer.BasicPlayerException;
-import me.steffenjacobs.effectivemusic.JavazoomAudioPlayer.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 
 /** @author Steffen Jacobs */
