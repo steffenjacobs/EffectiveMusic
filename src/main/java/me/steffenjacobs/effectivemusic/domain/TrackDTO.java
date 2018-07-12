@@ -59,5 +59,9 @@ public class TrackDTO {
 	public String getArtist_sort() {
 		return artist_sort;
 	}
+	
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
 }

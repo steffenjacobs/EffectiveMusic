@@ -20,7 +20,7 @@ public class PlaylistManager {
 
 	private static final long DELAY_NEXT_SONG_MILLIS = 500;
 	private static final boolean PLAY_IMMEDIATELY = true;
-	
+
 	private boolean loopAll = true, loopOne = false;
 
 	private final List<TrackMetadata> playlist = new ArrayList<>();

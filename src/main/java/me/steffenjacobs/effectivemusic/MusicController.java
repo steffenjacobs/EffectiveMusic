@@ -38,7 +38,7 @@ public class MusicController {
 	public ResponseEntity<String> playSong(String path) throws MalformedURLException {
 		playlistManager.clearPlaylist();
 		if (path.startsWith("https://www.youtube.com/watch?v=")) {
-			playlistManager.queue(new TrackMetadata(youtubeManager.getPlaybackUrl(path).toString()));
+			playlistManager.queue(youtubeManager.getPlaybackUrl(path));
 		} else {
 			playlistManager.queue(new TrackMetadata(path));
 		}

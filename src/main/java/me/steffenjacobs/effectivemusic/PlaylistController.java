@@ -27,7 +27,7 @@ public class PlaylistController {
 	@PostMapping(value = "/music/playlist/enquene", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ResponseEntity<String> enquene(String path) throws MalformedURLException {
 		if (path.startsWith("https://www.youtube.com/watch?v=")) {
-			playlistManager.queue(new TrackMetadata(youtubeManager.getPlaybackUrl(path).toString()));
+			playlistManager.queue(youtubeManager.getPlaybackUrl(path));
 		} else {
 			playlistManager.queue(new TrackMetadata(path));
 		}

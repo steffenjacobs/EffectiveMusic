@@ -17,6 +17,8 @@ import com.github.axet.vget.info.VideoFileInfo;
 import com.github.axet.vget.info.VideoInfo;
 
 import me.steffenjacobs.effectivemusic.audio.VLCMediaPlayerAdapter;
+import me.steffenjacobs.effectivemusic.domain.TrackDTO;
+import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
 
 /** @author Steffen Jacobs */
 
@@ -59,7 +61,7 @@ public class YoutubeManager {
 		return videoinfo.getTitle();
 	}
 
-	public URL getPlaybackUrl(String videoUrl) throws MalformedURLException {
+	public TrackMetadata getPlaybackUrl(String videoUrl) throws MalformedURLException {
 		URL web = new URL(videoUrl);
 
 		VGetParser user = VGet.parser(web);
@@ -77,7 +79,12 @@ public class YoutubeManager {
 		if (list != null) {
 			for (VideoFileInfo d : list) {
 				if (d.getContentType().equals("audio/webm")) {
-					return d.getSource();
+					TrackMetadata meta = new TrackMetadata();
+					meta.setPath(d.getSource().toString());
+					TrackDTO dto = new TrackDTO();
+					dto.setTitle(videoinfo.getTitle());
+					meta.setTrackDTO(dto);
+					return meta;
 				}
 			}
 		}
