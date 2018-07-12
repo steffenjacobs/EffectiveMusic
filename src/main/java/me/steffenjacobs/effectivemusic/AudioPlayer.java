@@ -1,123 +1,32 @@
 package me.steffenjacobs.effectivemusic;
 
-import java.io.File;
-import java.io.IOException;
-import org.jaudiotagger.audio.AudioFile;
-import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.audio.exceptions.CannotReadException;
-import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
-import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
-import org.jaudiotagger.tag.Tag;
-import org.jaudiotagger.tag.TagException;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
+import me.steffenjacobs.effectivemusic.JavazoomAudioPlayer.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
-import me.steffenjacobs.effectivemusic.util.ImprovedBasicPlayer;
 
 /** @author Steffen Jacobs */
-@Component
-@Scope("singleton")
-public class AudioPlayer {
+public interface AudioPlayer {
 
-	static enum Status {
-		STOPPED(2), PLAYING(0), PAUSED(1), UNKNOWN(Integer.MIN_VALUE);
+	void playAudio(String path) throws BasicPlayerException;
 
-		private final int value;
+	void stop() throws BasicPlayerException;
 
-		private Status(int value) {
-			this.value = value;
-		}
+	void pause() throws BasicPlayerException;
 
-		public static Status fromValue(int value) {
-			switch (value) {
-			case 0:
-				return Status.PLAYING;
-			case 1:
-				return Status.PAUSED;
-			case 2:
-				return Status.STOPPED;
-			default:
-				return Status.UNKNOWN;
-			}
-		}
+	void resume() throws BasicPlayerException;
 
-		public int getValue() {
-			return value;
-		}
-	}
+	Status getStatus();
 
-	private ImprovedBasicPlayer player;
+	double getGain();
 
-	private double volume = 1;
-	private String currentPath = "";
+	void setGain(double value) throws BasicPlayerException;
 
-	public void playAudio(String path) throws BasicPlayerException {
-		if (player == null) {
-			player = new ImprovedBasicPlayer();
-		}
-		currentPath = path;
+	long getFramePosition();
 
-		player.open(new File(path));
-		player.play();
-		player.setGain(volume);
-	}
+	long getMicrosecondPosition();
 
-	public void stop() throws BasicPlayerException {
-		if (player != null) {
-			player.stop();
-		}
-	}
+	void setPosition(long position) throws BasicPlayerException;
 
-	public void pause() throws BasicPlayerException {
-		if (player != null) {
-			player.pause();
-		}
-	}
+	TrackDTO getTrackInformation() throws BasicPlayerException;
 
-	public void resume() throws BasicPlayerException {
-		if (player != null) {
-			player.resume();
-		}
-	}
-
-	public Status getStatus() {
-		if (player != null) {
-			return Status.fromValue(player.getStatus());
-		}
-		return Status.UNKNOWN;
-	}
-
-	public double getGain() {
-		return volume;
-	}
-
-	public void setGain(double value) throws BasicPlayerException {
-		volume = value;
-		if (player != null) {
-			player.setGain(value);
-		}
-	}
-
-	public long getFramePosition() {
-		return player.getFramePosition();
-	}
-
-	public long getMicrosecondPosition() {
-		return player.getMicrosecondPosition();
-	}
-
-	public void setPosition(long position) throws BasicPlayerException {
-		player.seek(position);
-	}
-
-	public TrackDTO getTrackInformation() throws BasicPlayerException {
-		try {
-			AudioFile f = AudioFileIO.read(new File(currentPath));
-			Tag tag = f.getTag();
-			return new TrackDTO(tag);
-		} catch (CannotReadException | IOException | TagException | ReadOnlyFileException | InvalidAudioFrameException e) {
-			throw new BasicPlayerException(e);
-		}
-	}
 }

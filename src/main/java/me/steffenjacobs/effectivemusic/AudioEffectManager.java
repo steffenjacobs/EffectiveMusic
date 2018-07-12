@@ -13,13 +13,13 @@ import javazoom.jlgui.basicplayer.BasicPlayerException;
 /** @author Steffen Jacobs */
 @Component
 @Scope("singleton")
-@DependsOn("audioPlayer")
+@DependsOn("javazoomAudioPlayer")
 public class AudioEffectManager {
 
 	private static final long TIMER_INTERVAL_MILLIS = 100;
 
 	@Autowired
-	AudioPlayer audioPlayer;
+	JavazoomAudioPlayer javazoomAudioPlayer;
 
 	private boolean fading = false;
 
@@ -30,12 +30,12 @@ public class AudioEffectManager {
 		}
 		fading = true;
 
-		final double initialGain = audioPlayer.getGain();
+		final double initialGain = javazoomAudioPlayer.getGain();
 		if (targetGain == initialGain) {
 			return;
 		}
 		final long steps = fadelengthInMilis / TIMER_INTERVAL_MILLIS;
-		final AudioPlayer player = audioPlayer;
+		final AudioPlayer player = javazoomAudioPlayer;
 		boolean fadeUp = targetGain - initialGain > 0;
 		final Timer t = new Timer();
 		t.scheduleAtFixedRate(new TimerTask() {

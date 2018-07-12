@@ -2,8 +2,6 @@ package me.steffenjacobs.effectivemusic;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
@@ -13,101 +11,114 @@ import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagException;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.sun.jna.NativeLibrary;
-
 import javazoom.jlgui.basicplayer.BasicPlayerException;
-import me.steffenjacobs.effectivemusic.JavazoomAudioPlayer.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
-import uk.co.caprica.vlcj.component.AudioMediaPlayerComponent;
-import uk.co.caprica.vlcj.player.MediaPlayer;
-import uk.co.caprica.vlcj.runtime.RuntimeUtil;
+import me.steffenjacobs.effectivemusic.util.ImprovedBasicPlayer;
 
 /** @author Steffen Jacobs */
-
 @Component
 @Scope("singleton")
-public class VLCMediaPlayerAdapter implements AudioPlayer{
+public class JavazoomAudioPlayer implements AudioPlayer{
 
-	private static final String NATIVE_LIBRARY_SEARCH_PATH = "L:\\Programme\\VLC";
+	static enum Status {
+		STOPPED(2), PLAYING(0), PAUSED(1), UNKNOWN(Integer.MIN_VALUE);
 
-	private boolean initialized = false;
+		private final int value;
 
-	private MediaPlayer mediaPlayer;
-	
-	private String currentPath = "";
+		private Status(int value) {
+			this.value = value;
+		}
 
-	private void initIfNecessary() {
-		if (!initialized) {
-			NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), NATIVE_LIBRARY_SEARCH_PATH);
-			mediaPlayer = new AudioMediaPlayerComponent().getMediaPlayer();
+		public static Status fromValue(int value) {
+			switch (value) {
+			case 0:
+				return Status.PLAYING;
+			case 1:
+				return Status.PAUSED;
+			case 2:
+				return Status.STOPPED;
+			default:
+				return Status.UNKNOWN;
+			}
+		}
 
+		public int getValue() {
+			return value;
 		}
 	}
 
-	public void playFromUrl(URL url) {
-		initIfNecessary();
-		mediaPlayer.playMedia(url.toString());
-	}
+	private ImprovedBasicPlayer player;
+
+	private double volume = 1;
+	private String currentPath = "";
 
 	@Override
 	public void playAudio(String path) throws BasicPlayerException {
-		initIfNecessary();
-		mediaPlayer.playMedia(path);
+		if (player == null) {
+			player = new ImprovedBasicPlayer();
+		}
 		currentPath = path;
+
+		player.open(new File(path));
+		player.play();
+		player.setGain(volume);
 	}
 
 	@Override
 	public void stop() throws BasicPlayerException {
-		initIfNecessary();
-		mediaPlayer.stop();		
+		if (player != null) {
+			player.stop();
+		}
 	}
 
 	@Override
 	public void pause() throws BasicPlayerException {
-		initIfNecessary();
-		mediaPlayer.pause();
+		if (player != null) {
+			player.pause();
+		}
 	}
 
 	@Override
 	public void resume() throws BasicPlayerException {
-		initIfNecessary();
-		mediaPlayer.start();
+		if (player != null) {
+			player.resume();
+		}
 	}
 
 	@Override
 	public Status getStatus() {
-		// TODO Auto-generated method stub
-		return null;
+		if (player != null) {
+			return Status.fromValue(player.getStatus());
+		}
+		return Status.UNKNOWN;
 	}
 
 	@Override
 	public double getGain() {
-		initIfNecessary();
-		return mediaPlayer.getVolume();
+		return volume;
 	}
 
 	@Override
 	public void setGain(double value) throws BasicPlayerException {
-		initIfNecessary();
-		mediaPlayer.setVolume((int) value);		
+		volume = value;
+		if (player != null) {
+			player.setGain(value);
+		}
 	}
 
 	@Override
 	public long getFramePosition() {
-		// TODO Auto-generated method stub
-		return 0;
+		return player.getFramePosition();
 	}
 
 	@Override
 	public long getMicrosecondPosition() {
-		// TODO Auto-generated method stub
-		return 0;
+		return player.getMicrosecondPosition();
 	}
 
 	@Override
 	public void setPosition(long position) throws BasicPlayerException {
-		// TODO Auto-generated method stub		
+		player.seek(position);
 	}
 
 	@Override
@@ -120,5 +131,4 @@ public class VLCMediaPlayerAdapter implements AudioPlayer{
 			throw new BasicPlayerException(e);
 		}
 	}
-
 }

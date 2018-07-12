@@ -35,7 +35,7 @@ public class YoutubeDownloader {
 	private Mp4ToMp3Converter mp4ToMp3Converter;
 
 	@Autowired
-	AudioPlayer audioPlayer;
+	JavazoomAudioPlayer javazoomAudioPlayer;
 
 	private String downloadYoutube(String url) {
 		DirectMultipart.THREAD_COUNT = 8;
@@ -83,7 +83,7 @@ public class YoutubeDownloader {
 		String title = downloadYoutube(path);
 		String newPath = mp4ToMp3Converter.convertToMp3("C:\\Temp\\" + title + ".webm");
 		try {
-			audioPlayer.playAudio(newPath);
+			javazoomAudioPlayer.playAudio(newPath);
 		} catch (BasicPlayerException e) {
 			e.printStackTrace();
 		}

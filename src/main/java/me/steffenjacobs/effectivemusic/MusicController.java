@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javazoom.jlgui.basicplayer.BasicPlayerException;
-import me.steffenjacobs.effectivemusic.AudioPlayer.Status;
+import me.steffenjacobs.effectivemusic.JavazoomAudioPlayer.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 
 /** @author Steffen Jacobs */
@@ -20,7 +20,7 @@ import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 public class MusicController {
 
 	@Autowired
-	AudioPlayer audioPlayer;
+	JavazoomAudioPlayer javazoomAudioPlayer;
 
 	@Autowired
 	AudioEffectManager audioEffectManager;
@@ -31,7 +31,7 @@ public class MusicController {
 	@PostMapping(value = "/music/play", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ResponseEntity<String> playSong(String path) throws MalformedURLException, BasicPlayerException {
 		if (path.startsWith("https://www.youtube.com/watch?v=")) {
-			audioPlayer.stop();
+			javazoomAudioPlayer.stop();
 			youtubeManager.playYoutube(path);
 		} else {
 			throw new NotImplementedException("Only youtube playback allowed atm");
@@ -42,55 +42,55 @@ public class MusicController {
 
 	@PostMapping(value = "/music/stop")
 	public ResponseEntity<String> stop() throws BasicPlayerException {
-		audioPlayer.stop();
+		javazoomAudioPlayer.stop();
 		return new ResponseEntity<String>("Stopped music", HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/music/pause")
 	public ResponseEntity<String> pauseSong() throws BasicPlayerException {
-		audioPlayer.pause();
+		javazoomAudioPlayer.pause();
 		return new ResponseEntity<String>("Paused", HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/music/resume")
 	public ResponseEntity<String> resumeSong() throws BasicPlayerException {
-		audioPlayer.resume();
+		javazoomAudioPlayer.resume();
 		return new ResponseEntity<String>("Resumed", HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/music/status")
 	public ResponseEntity<String> getStatus() {
-		Status status = audioPlayer.getStatus();
+		Status status = javazoomAudioPlayer.getStatus();
 		return new ResponseEntity<String>("status: " + status, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/music/gain")
 	public ResponseEntity<String> getGain() {
-		double gain = audioPlayer.getGain();
+		double gain = javazoomAudioPlayer.getGain();
 		return new ResponseEntity<String>("gain: " + gain, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/music/gain", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ResponseEntity<String> setGain(double gain) throws BasicPlayerException {
-		audioPlayer.setGain(gain);
+		javazoomAudioPlayer.setGain(gain);
 		return new ResponseEntity<String>("gain: " + gain, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/music/position")
 	public ResponseEntity<String> getPosition() throws BasicPlayerException {
-		long position = audioPlayer.getMicrosecondPosition();
+		long position = javazoomAudioPlayer.getMicrosecondPosition();
 		return new ResponseEntity<String>("position: " + position / 1000000 + "s", HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/music/position", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ResponseEntity<String> setPosition(long position) throws BasicPlayerException {
-		audioPlayer.setPosition(position);
+		javazoomAudioPlayer.setPosition(position);
 		return new ResponseEntity<String>("position: " + position, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/music/info")
 	public ResponseEntity<TrackDTO> getTrackInfo() throws BasicPlayerException {
-		return new ResponseEntity<TrackDTO>(audioPlayer.getTrackInformation(), HttpStatus.OK);
+		return new ResponseEntity<TrackDTO>(javazoomAudioPlayer.getTrackInformation(), HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/music/fadeTo", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
