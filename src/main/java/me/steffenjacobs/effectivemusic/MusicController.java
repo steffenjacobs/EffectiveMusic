@@ -12,7 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javazoom.jlgui.basicplayer.BasicPlayerException;
+import me.steffenjacobs.effectivemusic.audio.AudioEffectManager;
+import me.steffenjacobs.effectivemusic.audio.VLCMediaPlayerAdapter;
+import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
+import me.steffenjacobs.effectivemusic.youtube.YoutubeManager;
 
 /** @author Steffen Jacobs */
 @Controller

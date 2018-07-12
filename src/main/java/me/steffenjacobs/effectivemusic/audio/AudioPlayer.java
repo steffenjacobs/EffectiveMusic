@@ -1,8 +1,9 @@
-package me.steffenjacobs.effectivemusic;
+package me.steffenjacobs.effectivemusic.audio;
 
 import org.jaudiotagger.tag.TagException;
 
 import javazoom.jlgui.basicplayer.BasicPlayerException;
+import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 
 /** @author Steffen Jacobs */

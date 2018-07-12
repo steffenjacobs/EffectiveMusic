@@ -1,4 +1,4 @@
-package me.steffenjacobs.effectivemusic;
+package me.steffenjacobs.effectivemusic.domain;
 
 /** @author Steffen Jacobs */
 public enum Status {

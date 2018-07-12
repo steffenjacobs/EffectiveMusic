@@ -1,4 +1,4 @@
-package me.steffenjacobs.effectivemusic;
+package me.steffenjacobs.effectivemusic.audio;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,6 +12,7 @@ import org.jaudiotagger.tag.TagException;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
+import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 import me.steffenjacobs.effectivemusic.util.ImprovedBasicPlayer;
 

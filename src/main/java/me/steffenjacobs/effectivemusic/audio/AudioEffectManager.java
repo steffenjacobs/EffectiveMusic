@@ -1,4 +1,4 @@
-package me.steffenjacobs.effectivemusic;
+package me.steffenjacobs.effectivemusic.audio;
 
 import java.util.Timer;
 import java.util.TimerTask;

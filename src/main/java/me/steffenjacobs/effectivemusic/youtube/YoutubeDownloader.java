@@ -1,4 +1,4 @@
-package me.steffenjacobs.effectivemusic;
+package me.steffenjacobs.effectivemusic.youtube;
 
 import java.io.File;
 import java.net.URL;
@@ -23,6 +23,8 @@ import com.github.axet.wget.info.DownloadInfo;
 import com.github.axet.wget.info.DownloadInfo.Part;
 import com.github.axet.wget.info.URLInfo.States;
 import com.github.axet.wget.info.ex.DownloadInterruptedError;
+
+import me.steffenjacobs.effectivemusic.audio.VLCMediaPlayerAdapter;
 
 /** @author Steffen Jacobs */
 

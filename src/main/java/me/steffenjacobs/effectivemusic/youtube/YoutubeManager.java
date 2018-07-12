@@ -1,4 +1,4 @@
-package me.steffenjacobs.effectivemusic;
+package me.steffenjacobs.effectivemusic.youtube;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -13,6 +13,8 @@ import com.github.axet.vget.VGet;
 import com.github.axet.vget.info.VGetParser;
 import com.github.axet.vget.info.VideoFileInfo;
 import com.github.axet.vget.info.VideoInfo;
+
+import me.steffenjacobs.effectivemusic.audio.VLCMediaPlayerAdapter;
 
 /** @author Steffen Jacobs */
 

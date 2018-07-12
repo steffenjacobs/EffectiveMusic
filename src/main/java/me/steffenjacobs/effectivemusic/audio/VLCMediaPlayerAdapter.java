@@ -1,4 +1,4 @@
-package me.steffenjacobs.effectivemusic;
+package me.steffenjacobs.effectivemusic.audio;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import com.sun.jna.NativeLibrary;
 
+import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 import uk.co.caprica.vlcj.component.AudioMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.MediaPlayer;

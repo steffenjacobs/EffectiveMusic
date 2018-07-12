@@ -1,4 +1,4 @@
-package me.steffenjacobs.effectivemusic;
+package me.steffenjacobs.effectivemusic.youtube;
 
 import java.io.BufferedReader;
 import java.io.IOException;
