@@ -31,7 +31,7 @@ import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 @Component("vlcPlayer")
 @Scope("singleton")
 public class VLCMediaPlayerAdapter implements AudioPlayer {
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(AudioPlayer.class);
 
 	private static final String NATIVE_LIBRARY_SEARCH_PATH = "L:\\Programme\\VLC";
@@ -155,6 +155,10 @@ public class VLCMediaPlayerAdapter implements AudioPlayer {
 	public void addListener(MediaPlayerEventListener listener) {
 		initIfNecessary();
 		mediaPlayer.addMediaPlayerEventListener(listener);
+	}
+
+	public long getLength() {
+		return mediaPlayer.getLength();
 	}
 
 }

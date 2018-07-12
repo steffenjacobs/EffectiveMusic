@@ -102,4 +102,10 @@ public class MusicController {
 		return new ResponseEntity<String>("fading...", HttpStatus.OK);
 	}
 
+	@GetMapping(value = "/music/length")
+	public ResponseEntity<String> getLength() {
+		long length = vlcPlayer.getLength();
+		return new ResponseEntity<String>("length: " + length + "ms", HttpStatus.OK);
+	}
+
 }
