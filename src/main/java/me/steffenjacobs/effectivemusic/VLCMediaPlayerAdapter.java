@@ -27,32 +27,38 @@ import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
 @Component
 @Scope("singleton")
-public class VLCMediaPlayerAdapter implements AudioPlayer{
+public class VLCMediaPlayerAdapter implements AudioPlayer {
 
 	private static final String NATIVE_LIBRARY_SEARCH_PATH = "L:\\Programme\\VLC";
 
 	private boolean initialized = false;
 
 	private MediaPlayer mediaPlayer;
-	
+
 	private String currentPath = "";
 
 	private void initIfNecessary() {
 		if (!initialized) {
 			NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), NATIVE_LIBRARY_SEARCH_PATH);
 			mediaPlayer = new AudioMediaPlayerComponent().getMediaPlayer();
-
+			initialized = true;
 		}
 	}
 
 	public void playFromUrl(URL url) {
 		initIfNecessary();
+		if (mediaPlayer.isPlaying()) {
+			mediaPlayer.stop();
+		}
 		mediaPlayer.playMedia(url.toString());
 	}
 
 	@Override
 	public void playAudio(String path) throws BasicPlayerException {
 		initIfNecessary();
+		if (mediaPlayer.isPlaying()) {
+			mediaPlayer.stop();
+		}
 		mediaPlayer.playMedia(path);
 		currentPath = path;
 	}
@@ -60,7 +66,7 @@ public class VLCMediaPlayerAdapter implements AudioPlayer{
 	@Override
 	public void stop() throws BasicPlayerException {
 		initIfNecessary();
-		mediaPlayer.stop();		
+		mediaPlayer.stop();
 	}
 
 	@Override
@@ -90,7 +96,7 @@ public class VLCMediaPlayerAdapter implements AudioPlayer{
 	@Override
 	public void setGain(double value) throws BasicPlayerException {
 		initIfNecessary();
-		mediaPlayer.setVolume((int) value);		
+		mediaPlayer.setVolume((int) value);
 	}
 
 	@Override
@@ -107,7 +113,7 @@ public class VLCMediaPlayerAdapter implements AudioPlayer{
 
 	@Override
 	public void setPosition(long position) throws BasicPlayerException {
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub
 	}
 
 	@Override
