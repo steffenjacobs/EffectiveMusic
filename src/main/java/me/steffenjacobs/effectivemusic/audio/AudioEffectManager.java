@@ -1,68 +1,61 @@
 package me.steffenjacobs.effectivemusic.audio;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import javazoom.jlgui.basicplayer.BasicPlayerException;
-
 /** @author Steffen Jacobs */
 @Component
 @Scope("singleton")
 @DependsOn("vlcPlayer")
-public class AudioEffectManager {
-
-	private static final long TIMER_INTERVAL_MILLIS = 100;
-	
-	private static double UPPER_LIMITE = 200;
+public class AudioEffectManager implements FadeCompleteListener {
 
 	@Autowired
 	VLCMediaPlayerAdapter vlcPlayer;
 
-	private boolean fading = false;
+	private AtomicBoolean fading = new AtomicBoolean(false);
+	private Fade fade;
 
-	public void fadeTo(final double targetGain, long fadelengthInMilis) {
-		
-		if (fading) {
-			throw new RuntimeException("Already fading.");
-		}
-		fading = true;
-
+	public void fadeTo(final double targetGain, long fadeLengthInMillis) {
 		final double initialGain = vlcPlayer.getGain();
+
 		if (targetGain == initialGain) {
-			return;
-		}
-		final long steps = fadelengthInMilis / TIMER_INTERVAL_MILLIS;
-		final AudioPlayer player = vlcPlayer;
-		boolean fadeUp = targetGain - initialGain > 0;
-		final Timer t = new Timer();
-		t.scheduleAtFixedRate(new TimerTask() {
-			double currentGain = initialGain;
-
-			@Override
-			public void run() {
-				currentGain += (targetGain - initialGain) / steps;
-				try {
-					player.setGain(currentGain < 0 ? 0 : currentGain > UPPER_LIMITE ? UPPER_LIMITE : currentGain);
-
-					if ((fadeUp && currentGain >= targetGain) || (!fadeUp && currentGain <= targetGain)) {
-						t.cancel();
-						player.setGain(targetGain);
-						fading = false;
-					}
-				} catch (BasicPlayerException e) {
-					e.printStackTrace();
-				}
-
+			if (!fading.get()) {
+				return;
 			}
-		}, 0, TIMER_INTERVAL_MILLIS);
+		}
+
+		Fade fadeIP;
+		if (fading.get() && fade != null) {
+			fadeIP = fade;
+			fade.pauseFade();
+		} else {
+			fadeIP = new Fade(this);
+		}
+		fadeIP.setTargetGain(targetGain);
+		fadeIP.setInitalGain(initialGain);
+		fadeIP.setSteps(fadeLengthInMillis / Fade.TIMER_INTERVAL_MILLIS);
+		fadeIP.setAudioPlayer(vlcPlayer);
+		fadeIP.setFadeUp(targetGain - initialGain > 0);
+
+		if (fading.get() && fade != null) {
+			fade.resumeFade();
+		} else {
+			fade = fadeIP;
+			fading.set(true);
+			fade.runAsync();
+		}
 	}
 
 	public void fadeOut(int length) {
 		fadeTo(0, length);
+	}
+
+	@Override
+	public void onFadeComplete() {
+		fading.set(false);
 	}
 }
