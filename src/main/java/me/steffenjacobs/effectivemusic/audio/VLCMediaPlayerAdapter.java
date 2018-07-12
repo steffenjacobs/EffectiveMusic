@@ -28,7 +28,7 @@ import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
 /** @author Steffen Jacobs */
 
-@Component("vlcPlayer")
+@Component("vlcPlayerAdapter")
 @Scope("singleton")
 public class VLCMediaPlayerAdapter implements AudioPlayer {
 

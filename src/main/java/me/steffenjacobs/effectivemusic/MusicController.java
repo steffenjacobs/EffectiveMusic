@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javazoom.jlgui.basicplayer.BasicPlayerException;
 import me.steffenjacobs.effectivemusic.audio.AudioEffectManager;
-import me.steffenjacobs.effectivemusic.audio.VLCMediaPlayerAdapter;
+import me.steffenjacobs.effectivemusic.audio.AudioPlayer;
 import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
@@ -24,7 +24,7 @@ import me.steffenjacobs.effectivemusic.youtube.YoutubeManager;
 public class MusicController {
 
 	@Autowired
-	VLCMediaPlayerAdapter vlcPlayer;
+	AudioPlayer vlcPlayer;
 
 	@Autowired
 	AudioEffectManager audioEffectManager;
@@ -101,7 +101,7 @@ public class MusicController {
 
 	@PostMapping(value = "/music/fadeTo", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ResponseEntity<String> fadeTo(double gain, long millis) throws BasicPlayerException {
-		audioEffectManager.fadeTo(gain, millis);
+		audioEffectManager.fadeTo(gain, millis, vlcPlayer);
 		return new ResponseEntity<String>("fading...", HttpStatus.OK);
 	}
 

@@ -2,25 +2,24 @@ package me.steffenjacobs.effectivemusic.audio;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /** @author Steffen Jacobs */
 @Component
 @Scope("singleton")
-@DependsOn("vlcPlayer")
 public class AudioEffectManager implements FadeCompleteListener {
-
-	@Autowired
-	VLCMediaPlayerAdapter vlcPlayer;
 
 	private AtomicBoolean fading = new AtomicBoolean(false);
 	private Fade fade;
 
-	public void fadeTo(final double targetGain, long fadeLengthInMillis) {
-		final double initialGain = vlcPlayer.getGain();
+	public void fadeTo(final double targetGain, long fadeLengthInMillis, AudioPlayer audioPlayer) {
+		fadeTo(targetGain, fadeLengthInMillis, null, audioPlayer);
+	}
+
+	public void fadeTo(final double targetGain, long fadeLengthInMillis, FadeCompleteListener onComplete, AudioPlayer audioPlayer) {
+
+		final double initialGain = audioPlayer.getGain();
 
 		if (targetGain == initialGain) {
 			if (!fading.get()) {
@@ -38,8 +37,11 @@ public class AudioEffectManager implements FadeCompleteListener {
 		fadeIP.setTargetGain(targetGain);
 		fadeIP.setInitalGain(initialGain);
 		fadeIP.setSteps(fadeLengthInMillis / Fade.TIMER_INTERVAL_MILLIS);
-		fadeIP.setAudioPlayer(vlcPlayer);
+		fadeIP.setAudioPlayer(audioPlayer);
 		fadeIP.setFadeUp(targetGain - initialGain > 0);
+		if (onComplete != null) {
+			fadeIP.addListener(onComplete);
+		}
 
 		if (fading.get() && fade != null) {
 			fade.resumeFade();
@@ -50,8 +52,8 @@ public class AudioEffectManager implements FadeCompleteListener {
 		}
 	}
 
-	public void fadeOut(int length) {
-		fadeTo(0, length);
+	public void fadeOut(int length, AudioPlayer audioPlayer) {
+		fadeTo(0, length, audioPlayer);
 	}
 
 	@Override

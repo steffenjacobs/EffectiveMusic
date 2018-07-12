@@ -8,6 +8,7 @@ import me.steffenjacobs.effectivemusic.audio.AudioPlayer;
 import me.steffenjacobs.effectivemusic.audio.VLCMediaPlayerAdapter;
 import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
+import uk.co.caprica.vlcj.player.MediaPlayerEventListener;
 
 /** @author Steffen Jacobs */
 // @Component("dualPlayer")
@@ -94,5 +95,16 @@ public class DualAudioPlayer implements AudioPlayer, InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		currentPlayer = player1;
+	}
+
+	@Override
+	public long getLength() {
+		return currentPlayer.getLength();
+	}
+
+	@Override
+	public void addListener(MediaPlayerEventListener listener) {
+		player1.addListener(listener);
+		player2.addListener(listener);
 	}
 }

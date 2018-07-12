@@ -9,7 +9,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import me.steffenjacobs.effectivemusic.audio.VLCMediaPlayerAdapter;
+import me.steffenjacobs.effectivemusic.audio.AudioPlayer;
 import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
 import uk.co.caprica.vlcj.player.MediaPlayer;
@@ -29,7 +29,7 @@ public class PlaylistManager {
 	private AtomicBoolean skip = new AtomicBoolean(false);
 
 	@Autowired
-	VLCMediaPlayerAdapter vlcPlayer;
+	AudioPlayer vlcPlayer;
 
 	public void queue(TrackMetadata track) {
 		playlist.add(track);
@@ -91,7 +91,7 @@ public class PlaylistManager {
 				}
 
 				final boolean l = loopOne;
-				final VLCMediaPlayerAdapter p = vlcPlayer;
+				final AudioPlayer p = vlcPlayer;
 				final int i = currentIndex;
 
 				new java.util.Timer().schedule(new java.util.TimerTask() {

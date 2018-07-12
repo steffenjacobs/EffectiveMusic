@@ -1,19 +1,20 @@
 package me.steffenjacobs.effectivemusic.audio;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javazoom.jlgui.basicplayer.BasicPlayerException;
 import me.steffenjacobs.effectivemusic.util.AtomicDouble;
 
 /** @author Steffen Jacobs */
 public class Fade {
-	private static final Logger LOG = LoggerFactory.getLogger(AudioEffectManager.class);
-	static final long TIMER_INTERVAL_MILLIS = 100;
+	private static final Logger LOG = LoggerFactory.getLogger(Fade.class);
+	static final long TIMER_INTERVAL_MILLIS = 20;
 	private static final double UPPER_LIMIT = 200;
 
 	private AtomicDouble steps = new AtomicDouble();
@@ -21,10 +22,10 @@ public class Fade {
 	private AtomicBoolean fadeUp = new AtomicBoolean(false);
 	private AudioPlayer player;
 	private AtomicBoolean paused = new AtomicBoolean(false);
-	private final FadeCompleteListener listener;
+	private final List<FadeCompleteListener> listeners = new CopyOnWriteArrayList<>();
 
 	public Fade(FadeCompleteListener listener) {
-		this.listener = listener;
+		this.listeners.add(listener);
 	}
 
 	public void pauseFade() {
@@ -56,6 +57,10 @@ public class Fade {
 		fadeUp.set(newFadeUp);
 	}
 
+	public void addListener(FadeCompleteListener listener) {
+		listeners.add(listener);
+	}
+
 	public void runAsync() {
 		LOG.info("Fading from {} to {}", initialGain.get(), targetGain.get());
 		paused.set(false);
@@ -69,22 +74,15 @@ public class Fade {
 					return;
 				}
 				currentGain += (targetGain.get() - initialGain.get()) / steps.get();
-				try {
-					player.setGain(currentGain < 0 ? 0 : currentGain > UPPER_LIMIT ? UPPER_LIMIT : currentGain);
+				player.setGain(currentGain < 0 ? 0 : currentGain > UPPER_LIMIT ? UPPER_LIMIT : currentGain);
 
-					if ((fadeUp.get() && currentGain >= targetGain.get()) || (!fadeUp.get() && currentGain <= targetGain.get())) {
-						t.cancel();
-						player.setGain(targetGain.get());
+				if ((fadeUp.get() && currentGain >= targetGain.get()) || (!fadeUp.get() && currentGain <= targetGain.get())) {
+					t.cancel();
+					player.setGain(targetGain.get());
 
-						if (listener != null) {
-							listener.onFadeComplete();
-						}
-						LOG.info("Fade complete");
-					}
-				} catch (BasicPlayerException e) {
-					e.printStackTrace();
+					listeners.forEach(l -> l.onFadeComplete());
+					LOG.info("Fade complete");
 				}
-
 			}
 		}, 0, TIMER_INTERVAL_MILLIS);
 	}

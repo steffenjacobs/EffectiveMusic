@@ -2,31 +2,35 @@ package me.steffenjacobs.effectivemusic.audio;
 
 import org.jaudiotagger.tag.TagException;
 
-import javazoom.jlgui.basicplayer.BasicPlayerException;
 import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
+import uk.co.caprica.vlcj.player.MediaPlayerEventListener;
 
 /** @author Steffen Jacobs */
 public interface AudioPlayer {
 
-	void playAudio(String path) throws BasicPlayerException;
+	void playAudio(String path);
 
-	void stop() throws BasicPlayerException;
+	void stop();
 
-	void pause() throws BasicPlayerException;
+	void pause();
 
-	void resume() throws BasicPlayerException;
+	void resume();
 
 	Status getStatus();
 
 	double getGain();
 
-	void setGain(double value) throws BasicPlayerException;
+	void setGain(double value);
 
 	float getPosition();
 
-	void setPosition(float position) throws BasicPlayerException;
+	void setPosition(float position);
 
 	TrackDTO getTrackInformation() throws TagException;
+
+	long getLength();
+
+	void addListener(MediaPlayerEventListener listener);
 
 }
