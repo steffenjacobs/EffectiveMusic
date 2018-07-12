@@ -50,16 +50,25 @@
 			<version>3.0.0.0</version>
 		</dependency>
 
+		<!-- Flac codec -->
 		<dependency>
 			<groupId>org.jflac</groupId>
 			<artifactId>jflac-codec</artifactId>
 			<version>1.5.2</version>
 		</dependency>
 
+		<!-- Tags -->
 		<dependency>
 			<groupId>org</groupId>
 			<artifactId>jaudiotagger</artifactId>
 			<version>2.0.3</version>
+		</dependency>
+
+		<!-- Youtube live player -->
+		<dependency>
+			<groupId>uk.co.caprica</groupId>
+			<artifactId>vlcj</artifactId>
+			<version>3.10.1</version>
 		</dependency>
 
 		<!-- Youtube Download -->

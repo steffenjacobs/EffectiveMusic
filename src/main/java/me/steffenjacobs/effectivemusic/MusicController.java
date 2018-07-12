@@ -1,5 +1,8 @@
 package me.steffenjacobs.effectivemusic;
 
+import java.net.MalformedURLException;
+
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,16 +24,18 @@ public class MusicController {
 
 	@Autowired
 	AudioEffectManager audioEffectManager;
-	
+
 	@Autowired
 	YoutubeManager youtubeManager;
 
 	@PostMapping(value = "/music/play", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public ResponseEntity<String> playSong(String path) throws BasicPlayerException {
+	public ResponseEntity<String> playSong(String path) throws MalformedURLException, BasicPlayerException {
 		if (path.startsWith("https://www.youtube.com/watch?v=")) {
+			audioPlayer.stop();
 			youtubeManager.playYoutube(path);
 		} else {
-			audioPlayer.playAudio(path);
+			throw new NotImplementedException("Only youtube playback allowed atm");
+			// TODO: Spotify
 		}
 		return new ResponseEntity<String>("Playing file " + path, HttpStatus.ACCEPTED);
 	}
