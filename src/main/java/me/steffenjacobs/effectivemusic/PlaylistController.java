@@ -64,6 +64,12 @@ public class PlaylistController {
 		return new ResponseEntity<String>("Skipped to previous track", HttpStatus.OK);
 	}
 
+	@PostMapping(value = "/music/playlist/play")
+	public ResponseEntity<String> play() {
+		playlistManager.startPlaylist();
+		return new ResponseEntity<String>("started playlist", HttpStatus.OK);
+	}
+
 	@GetMapping(value = "/music/playlist")
 	public ResponseEntity<List<TrackMetadata>> getPlaylist() {
 		return new ResponseEntity<List<TrackMetadata>>(playlistManager.getPlaylist(), HttpStatus.OK);

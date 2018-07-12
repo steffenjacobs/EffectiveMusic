@@ -76,6 +76,11 @@ public class PlaylistManager {
 		loopOne = value;
 	}
 
+	public void startPlaylist() {
+		currentIndex = 0;
+		vlcPlayer.playAudio(playlist.get(currentIndex).getPath());
+	}
+
 	@EventListener(ApplicationReadyEvent.class)
 	public void registerListener() {
 		vlcPlayer.addListener(new VLCPlayerEventHandler() {
