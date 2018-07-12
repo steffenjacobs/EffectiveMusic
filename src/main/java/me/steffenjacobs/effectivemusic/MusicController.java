@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javazoom.jlgui.basicplayer.BasicPlayerException;
 import me.steffenjacobs.effectivemusic.audio.AudioEffectManager;
 import me.steffenjacobs.effectivemusic.audio.AudioPlayer;
 import me.steffenjacobs.effectivemusic.domain.Status;
@@ -31,12 +30,12 @@ public class MusicController {
 
 	@Autowired
 	YoutubeManager youtubeManager;
-	
+
 	@Autowired
 	PlaylistManager playlistManager;
 
 	@PostMapping(value = "/music/play", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public ResponseEntity<String> playSong(String path) throws MalformedURLException, BasicPlayerException {
+	public ResponseEntity<String> playSong(String path) throws MalformedURLException {
 		playlistManager.clearPlaylist();
 		if (path.startsWith("https://www.youtube.com/watch?v=")) {
 			playlistManager.queue(new TrackMetadata(youtubeManager.getPlaybackUrl(path).toString()));
@@ -47,19 +46,19 @@ public class MusicController {
 	}
 
 	@PostMapping(value = "/music/stop")
-	public ResponseEntity<String> stop() throws BasicPlayerException {
+	public ResponseEntity<String> stop() {
 		vlcPlayer.stop();
 		return new ResponseEntity<String>("Stopped music", HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/music/pause")
-	public ResponseEntity<String> pauseSong() throws BasicPlayerException {
+	public ResponseEntity<String> pauseSong() {
 		vlcPlayer.pause();
 		return new ResponseEntity<String>("Paused", HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/music/resume")
-	public ResponseEntity<String> resumeSong() throws BasicPlayerException {
+	public ResponseEntity<String> resumeSong() {
 		vlcPlayer.resume();
 		return new ResponseEntity<String>("Resumed", HttpStatus.OK);
 	}
@@ -77,19 +76,19 @@ public class MusicController {
 	}
 
 	@PostMapping(value = "/music/gain", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public ResponseEntity<String> setGain(double gain) throws BasicPlayerException {
+	public ResponseEntity<String> setGain(double gain) {
 		vlcPlayer.setGain(gain);
 		return new ResponseEntity<String>("gain: " + gain, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/music/position")
-	public ResponseEntity<String> getPosition() throws BasicPlayerException {
+	public ResponseEntity<String> getPosition() {
 		float position = vlcPlayer.getPosition();
 		return new ResponseEntity<String>("position: " + position + "%", HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/music/position", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public ResponseEntity<String> setPosition(float position) throws BasicPlayerException {
+	public ResponseEntity<String> setPosition(float position) {
 		vlcPlayer.setPosition(position);
 		return new ResponseEntity<String>("position: " + position, HttpStatus.OK);
 	}
@@ -100,7 +99,7 @@ public class MusicController {
 	}
 
 	@PostMapping(value = "/music/fadeTo", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public ResponseEntity<String> fadeTo(double gain, long millis) throws BasicPlayerException {
+	public ResponseEntity<String> fadeTo(double gain, long millis) {
 		audioEffectManager.fadeTo(gain, millis, vlcPlayer);
 		return new ResponseEntity<String>("fading...", HttpStatus.OK);
 	}

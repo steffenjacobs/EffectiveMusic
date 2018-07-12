@@ -43,20 +43,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- Javazoom Player -->
-		<dependency>
-			<groupId>com.googlecode.soundlibs</groupId>
-			<artifactId>basicplayer</artifactId>
-			<version>3.0.0.0</version>
-		</dependency>
-
-		<!-- Flac codec -->
-		<dependency>
-			<groupId>org.jflac</groupId>
-			<artifactId>jflac-codec</artifactId>
-			<version>1.5.2</version>
-		</dependency>
-
 		<!-- Tags -->
 		<dependency>
 			<groupId>org</groupId>
