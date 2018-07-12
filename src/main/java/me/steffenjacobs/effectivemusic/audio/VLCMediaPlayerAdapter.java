@@ -52,7 +52,7 @@ public class VLCMediaPlayerAdapter implements AudioPlayer {
 				@Override
 				public void finished(MediaPlayer mediaPlayer) {
 					status = Status.STOPPED;
-					System.out.println("finished");
+					LOG.info("finished.");
 				}
 			});
 			initialized = true;
