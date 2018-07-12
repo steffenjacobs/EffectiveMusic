@@ -54,4 +54,29 @@ public class YoutubeManager {
 
 		return videoinfo.getTitle();
 	}
+
+	public URL getPlaybackUrl(String videoUrl) throws MalformedURLException {
+		URL web = new URL(videoUrl);
+
+		VGetParser user = VGet.parser(web);
+
+		VideoInfo videoinfo = user.info(web);
+
+		VGet v = new VGet(videoinfo, new File("C:\\Temp\\"));
+		v.extract(user, new AtomicBoolean(false), new Runnable() {
+			@Override
+			public void run() {
+			}
+		});
+
+		List<VideoFileInfo> list = videoinfo.getInfo();
+		if (list != null) {
+			for (VideoFileInfo d : list) {
+				if (d.getContentType().equals("audio/webm")) {
+					return d.getSource();
+				}
+			}
+		}
+		throw new MalformedURLException("Bad video URL");
+	}
 }
