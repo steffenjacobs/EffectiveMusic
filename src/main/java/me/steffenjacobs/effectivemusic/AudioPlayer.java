@@ -1,5 +1,7 @@
 package me.steffenjacobs.effectivemusic;
 
+import org.jaudiotagger.tag.TagException;
+
 import javazoom.jlgui.basicplayer.BasicPlayerException;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 
@@ -26,6 +28,6 @@ public interface AudioPlayer {
 
 	void setPosition(long position) throws BasicPlayerException;
 
-	TrackDTO getTrackInformation() throws BasicPlayerException;
+	TrackDTO getTrackInformation() throws TagException;
 
 }

@@ -3,6 +3,7 @@ package me.steffenjacobs.effectivemusic;
 import java.net.MalformedURLException;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.jaudiotagger.tag.TagException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -88,7 +89,7 @@ public class MusicController {
 	}
 
 	@GetMapping(value = "/music/info")
-	public ResponseEntity<TrackDTO> getTrackInfo() throws BasicPlayerException {
+	public ResponseEntity<TrackDTO> getTrackInfo() throws TagException {
 		return new ResponseEntity<TrackDTO>(javazoomAudioPlayer.getTrackInformation(), HttpStatus.OK);
 	}
 

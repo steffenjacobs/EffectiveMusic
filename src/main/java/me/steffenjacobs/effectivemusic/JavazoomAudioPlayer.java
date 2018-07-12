@@ -18,9 +18,7 @@ import me.steffenjacobs.effectivemusic.util.ImprovedBasicPlayer;
 /** @author Steffen Jacobs */
 @Component
 @Scope("singleton")
-public class JavazoomAudioPlayer implements AudioPlayer{
-
-	
+public class JavazoomAudioPlayer implements AudioPlayer {
 
 	private ImprovedBasicPlayer player;
 
@@ -97,13 +95,13 @@ public class JavazoomAudioPlayer implements AudioPlayer{
 	}
 
 	@Override
-	public TrackDTO getTrackInformation() throws BasicPlayerException {
+	public TrackDTO getTrackInformation() throws TagException {
 		try {
 			AudioFile f = AudioFileIO.read(new File(currentPath));
 			Tag tag = f.getTag();
 			return new TrackDTO(tag);
 		} catch (CannotReadException | IOException | TagException | ReadOnlyFileException | InvalidAudioFrameException e) {
-			throw new BasicPlayerException(e);
+			throw new TagException(e);
 		}
 	}
 }

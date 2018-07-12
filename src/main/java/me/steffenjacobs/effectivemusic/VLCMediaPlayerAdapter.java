@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import com.sun.jna.NativeLibrary;
 
-import javazoom.jlgui.basicplayer.BasicPlayerException;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 import uk.co.caprica.vlcj.component.AudioMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.MediaPlayer;
@@ -56,7 +55,7 @@ public class VLCMediaPlayerAdapter implements AudioPlayer {
 	}
 
 	@Override
-	public void playAudio(String path) throws BasicPlayerException {
+	public void playAudio(String path) {
 		initIfNecessary();
 		if (mediaPlayer.isPlaying()) {
 			mediaPlayer.stop();
@@ -67,21 +66,21 @@ public class VLCMediaPlayerAdapter implements AudioPlayer {
 	}
 
 	@Override
-	public void stop() throws BasicPlayerException {
+	public void stop() {
 		initIfNecessary();
 		mediaPlayer.stop();
 		status = Status.STOPPED;
 	}
 
 	@Override
-	public void pause() throws BasicPlayerException {
+	public void pause() {
 		initIfNecessary();
 		mediaPlayer.pause();
 		status = Status.PAUSED;
 	}
 
 	@Override
-	public void resume() throws BasicPlayerException {
+	public void resume() {
 		initIfNecessary();
 		mediaPlayer.start();
 		status = Status.PLAYING;
@@ -99,7 +98,7 @@ public class VLCMediaPlayerAdapter implements AudioPlayer {
 	}
 
 	@Override
-	public void setGain(double value) throws BasicPlayerException {
+	public void setGain(double value) {
 		initIfNecessary();
 		mediaPlayer.setVolume((int) value);
 	}
@@ -117,18 +116,18 @@ public class VLCMediaPlayerAdapter implements AudioPlayer {
 	}
 
 	@Override
-	public void setPosition(long position) throws BasicPlayerException {
+	public void setPosition(long position) {
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public TrackDTO getTrackInformation() throws BasicPlayerException {
+	public TrackDTO getTrackInformation() throws TagException {
 		try {
 			AudioFile f = AudioFileIO.read(new File(currentPath));
 			Tag tag = f.getTag();
 			return new TrackDTO(tag);
 		} catch (CannotReadException | IOException | TagException | ReadOnlyFileException | InvalidAudioFrameException e) {
-			throw new BasicPlayerException(e);
+			throw new TagException(e);
 		}
 	}
 
