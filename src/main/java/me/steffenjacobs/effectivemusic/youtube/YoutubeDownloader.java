@@ -25,6 +25,7 @@ import com.github.axet.wget.info.URLInfo.States;
 import com.github.axet.wget.info.ex.DownloadInterruptedError;
 
 import me.steffenjacobs.effectivemusic.audio.VLCMediaPlayerAdapter;
+import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
 
 /** @author Steffen Jacobs */
 
@@ -82,8 +83,7 @@ public class YoutubeDownloader {
 	public void playYoutube(String path) {
 		String title = downloadYoutube(path);
 		String newPath = mp4ToMp3Converter.convertToMp3("C:\\Temp\\" + title + ".webm");
-		vlcPlayer.playAudio(newPath);
-
+		vlcPlayer.playAudio(new TrackMetadata(newPath));
 	}
 
 	static class VGetStatus implements Runnable {

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
+import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
 import uk.co.caprica.vlcj.player.MediaPlayerEventListener;
 
 /** @author Steffen Jacobs */
@@ -25,9 +26,9 @@ public class SmoothedAudioPlayer implements AudioPlayer {
 	private double gain = 100;
 
 	@Override
-	public void playAudio(String path) {
+	public void playAudio(TrackMetadata metadata) {
 		vlcPlayerAdapter.setGain(0);
-		vlcPlayerAdapter.playAudio(path);
+		vlcPlayerAdapter.playAudio(metadata);
 		audioEffectManager.fadeTo(gain, FADE_MILLIS, vlcPlayerAdapter);
 	}
 

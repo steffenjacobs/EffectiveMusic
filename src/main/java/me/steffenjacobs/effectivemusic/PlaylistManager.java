@@ -34,7 +34,7 @@ public class PlaylistManager {
 	public void queue(TrackMetadata track) {
 		playlist.add(track);
 		if (PLAY_IMMEDIATELY && vlcPlayer.getStatus() == Status.STOPPED) {
-			vlcPlayer.playAudio(track.getPath());
+			vlcPlayer.playAudio(track);
 		}
 	}
 
@@ -45,10 +45,10 @@ public class PlaylistManager {
 	public void playNext() {
 		skip.set(true);
 		if (currentIndex + 1 <= playlist.size() - 1) {
-			vlcPlayer.playAudio(playlist.get(++currentIndex).getPath());
+			vlcPlayer.playAudio(playlist.get(++currentIndex));
 		} else if (loopAll) {
 			currentIndex = 0;
-			vlcPlayer.playAudio(playlist.get(currentIndex).getPath());
+			vlcPlayer.playAudio(playlist.get(currentIndex));
 		}
 		skip.set(false);
 	}
@@ -56,10 +56,10 @@ public class PlaylistManager {
 	public void playPrevious() {
 		skip.set(true);
 		if (currentIndex - 1 >= 0) {
-			vlcPlayer.playAudio(playlist.get(--currentIndex).getPath());
+			vlcPlayer.playAudio(playlist.get(--currentIndex));
 		} else if (loopAll) {
 			currentIndex = playlist.size() - 1;
-			vlcPlayer.playAudio(playlist.get(currentIndex).getPath());
+			vlcPlayer.playAudio(playlist.get(currentIndex));
 		}
 		skip.set(false);
 	}
@@ -78,7 +78,7 @@ public class PlaylistManager {
 
 	public void startPlaylist() {
 		currentIndex = 0;
-		vlcPlayer.playAudio(playlist.get(currentIndex).getPath());
+		vlcPlayer.playAudio(playlist.get(currentIndex));
 	}
 
 	@EventListener(ApplicationReadyEvent.class)
@@ -98,7 +98,7 @@ public class PlaylistManager {
 					@Override
 					public void run() {
 						if (l) {
-							p.playAudio(playlist.get(i).getPath());
+							p.playAudio(playlist.get(i));
 						} else {
 							playNext();
 						}

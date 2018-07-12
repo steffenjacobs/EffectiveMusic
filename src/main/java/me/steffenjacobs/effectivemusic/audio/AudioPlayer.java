@@ -4,12 +4,13 @@ import org.jaudiotagger.tag.TagException;
 
 import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
+import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
 import uk.co.caprica.vlcj.player.MediaPlayerEventListener;
 
 /** @author Steffen Jacobs */
 public interface AudioPlayer {
 
-	void playAudio(String path);
+	void playAudio(TrackMetadata metadata);
 
 	void stop();
 
