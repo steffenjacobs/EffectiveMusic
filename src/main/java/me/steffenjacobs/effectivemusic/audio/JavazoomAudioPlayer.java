@@ -167,9 +167,7 @@ public class JavazoomAudioPlayer implements AudioPlayer, InitializingBean {
 				}
 				switch (event.getCode()) {
 				case BasicPlayerEvent.STOPPED:
-					System.out.println("in-stop");
 					listener.onStop();
-					listener.onFinish();
 					break;
 				case BasicPlayerEvent.PLAYING:
 					listener.onStart();
@@ -179,6 +177,9 @@ public class JavazoomAudioPlayer implements AudioPlayer, InitializingBean {
 					break;
 				case BasicPlayerEvent.RESUMED:
 					listener.onResume();
+					break;
+				case BasicPlayerEvent.EOM:
+					listener.onFinish();
 					break;
 				}
 			}
