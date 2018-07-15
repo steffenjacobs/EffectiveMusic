@@ -21,12 +21,11 @@ import me.steffenjacobs.effectivemusic.util.ImprovedBasicPlayer;
 public class JavazoomAudioPlayer implements AudioPlayer, InitializingBean {
 
 	private ImprovedBasicPlayer player;
-
-	private double volume = 1;
+	private double volume = 100;
 
 	@Override
 	public TrackMetadata playAudio(TrackMetadata metadata) throws AudioException {
-		
+
 		try {
 			player.open(new File(metadata.getPath()));
 			player.play();

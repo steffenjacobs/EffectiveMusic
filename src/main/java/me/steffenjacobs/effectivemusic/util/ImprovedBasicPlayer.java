@@ -801,7 +801,7 @@ public class ImprovedBasicPlayer implements BasicController, Runnable
     {
         if (hasGainControl())
         {
-            return m_gainControl.getValue();
+            return (float) Normalizer.mapZeroToOneToZeroToOnehundred(m_gainControl.getValue());
         }
         else
         {
@@ -962,11 +962,13 @@ public class ImprovedBasicPlayer implements BasicController, Runnable
     /**
      * Sets Gain value.
      * Line should be opened before calling this method.
-     * Linear scale 0.0  <-->  1.0
+     * Linear scale 0.0  <-->  100.0
      * Threshold Coef. : 1/2 to avoid saturation.
+     * @param fGain: should be between 0 and 100
      */
     public void setGain(double fGain) throws BasicPlayerException
     {
+    	fGain = Normalizer.mapZeroToOnehundredToZeroToOne(fGain);
         if (hasGainControl())
         {
             double minGainDB = getMinimumGain();
