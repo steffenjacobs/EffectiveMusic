@@ -38,8 +38,13 @@ public class PlaylistManager {
 		}
 	}
 
-	public void dequeue(int index) {
-		playlist.remove(index);
+	public boolean dequeue(int index) {
+		try {
+			playlist.remove(index);
+			return true;
+		} catch (IndexOutOfBoundsException e) {
+			return false;
+		}
 	}
 
 	public void playNext() {

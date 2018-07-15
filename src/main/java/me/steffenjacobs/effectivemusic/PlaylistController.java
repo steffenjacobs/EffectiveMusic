@@ -36,8 +36,8 @@ public class PlaylistController {
 
 	@PostMapping(value = "/music/playlist/dequene", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ResponseEntity<String> dequene(int index) {
-		playlistManager.dequeue(index);
-		return new ResponseEntity<String>("Removed file from playlist: " + index, HttpStatus.ACCEPTED);
+		boolean val = playlistManager.dequeue(index);
+		return new ResponseEntity<String>("Removed file from playlist: " + index + " - " + val, HttpStatus.ACCEPTED);
 	}
 
 	@PostMapping(value = "/music/playlist/loop_all", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
