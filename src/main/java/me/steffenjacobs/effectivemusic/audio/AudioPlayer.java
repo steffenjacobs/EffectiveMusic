@@ -29,8 +29,6 @@ public interface AudioPlayer {
 
 	TrackDTO getTrackInformation() throws TagException;
 
-	long getLength();
-
 	void addListener(AudioPlayerListener listener);
 
 }

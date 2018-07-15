@@ -84,11 +84,6 @@ public class SmoothedAudioPlayer implements AudioPlayer {
 	}
 
 	@Override
-	public long getLength() {
-		return vlcPlayerAdapter.getLength();
-	}
-
-	@Override
 	public void addListener(AudioPlayerListener listener) {
 		vlcPlayerAdapter.addListener(listener);
 	}

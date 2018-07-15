@@ -103,11 +103,6 @@ public class DualAudioPlayer implements AudioPlayer, InitializingBean {
 	}
 
 	@Override
-	public long getLength() {
-		return currentPlayer.getLength();
-	}
-
-	@Override
 	public void addListener(AudioPlayerListener listener) {
 		player1.addListener(listener);
 		player2.addListener(listener);

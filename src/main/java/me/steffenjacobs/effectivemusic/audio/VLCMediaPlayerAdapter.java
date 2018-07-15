@@ -144,7 +144,7 @@ public class VLCMediaPlayerAdapter implements AudioPlayer {
 	public TrackDTO getTrackInformation() throws TagException {
 		try {
 			AudioFile f = AudioFileIO.read(new File(currentlyPlayed.getPath()));
-			return new TrackDTO(f.getTag());
+			return new TrackDTO(f.getTag(), f.getAudioHeader().getTrackLength());
 		} catch (CannotReadException | IOException | TagException | ReadOnlyFileException | InvalidAudioFrameException e) {
 			return currentlyPlayed.getTrackDTO();
 		}
@@ -160,10 +160,4 @@ public class VLCMediaPlayerAdapter implements AudioPlayer {
 			}
 		});
 	}
-
-	@Override
-	public long getLength() {
-		return mediaPlayer.getLength();
-	}
-
 }

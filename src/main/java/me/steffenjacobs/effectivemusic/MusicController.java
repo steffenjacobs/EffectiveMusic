@@ -105,8 +105,8 @@ public class MusicController {
 	}
 
 	@GetMapping(value = "/music/length")
-	public ResponseEntity<String> getLength() {
-		long length = audioPlayerManager.getLength();
+	public ResponseEntity<String> getLength() throws TagException {
+		long length = audioPlayerManager.getTrackInformation().getLength();
 		return new ResponseEntity<String>("length: " + length + "ms", HttpStatus.OK);
 	}
 

@@ -11,6 +11,7 @@ import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagException;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +27,7 @@ import me.steffenjacobs.effectivemusic.util.ImprovedBasicPlayer;
 /** @author Steffen Jacobs */
 @Component
 @Scope("singleton")
-public class JavazoomAudioPlayer implements AudioPlayer {
+public class JavazoomAudioPlayer implements AudioPlayer, InitializingBean {
 
 	private ImprovedBasicPlayer player;
 
@@ -35,9 +36,6 @@ public class JavazoomAudioPlayer implements AudioPlayer {
 
 	@Override
 	public void playAudio(TrackMetadata metadata) throws AudioException {
-		if (player == null) {
-			player = new ImprovedBasicPlayer();
-		}
 		currentPath = metadata.getPath();
 
 		try {
@@ -51,43 +49,34 @@ public class JavazoomAudioPlayer implements AudioPlayer {
 
 	@Override
 	public void stop() throws AudioException {
-		if (player != null) {
-			try {
-				player.stop();
-			} catch (BasicPlayerException e) {
-				throw new AudioException(e);
-			}
+		try {
+			player.stop();
+		} catch (BasicPlayerException e) {
+			throw new AudioException(e);
 		}
 	}
 
 	@Override
 	public void pause() throws AudioException {
-		if (player != null) {
-			try {
-				player.pause();
-			} catch (BasicPlayerException e) {
-				throw new AudioException(e);
-			}
+		try {
+			player.pause();
+		} catch (BasicPlayerException e) {
+			throw new AudioException(e);
 		}
 	}
 
 	@Override
 	public void resume() throws AudioException {
-		if (player != null) {
-			try {
-				player.resume();
-			} catch (BasicPlayerException e) {
-				throw new AudioException(e);
-			}
+		try {
+			player.resume();
+		} catch (BasicPlayerException e) {
+			throw new AudioException(e);
 		}
 	}
 
 	@Override
 	public Status getStatus() {
-		if (player != null) {
-			return Status.fromValue(player.getStatus());
-		}
-		return Status.UNKNOWN;
+		return Status.fromValue(player.getStatus());
 	}
 
 	@Override
@@ -98,12 +87,10 @@ public class JavazoomAudioPlayer implements AudioPlayer {
 	@Override
 	public void setGain(double value) throws AudioException {
 		volume = value;
-		if (player != null) {
-			try {
-				player.setGain(value);
-			} catch (BasicPlayerException e) {
-				throw new AudioException(e);
-			}
+		try {
+			player.setGain(value);
+		} catch (BasicPlayerException e) {
+			throw new AudioException(e);
 		}
 	}
 
@@ -131,7 +118,7 @@ public class JavazoomAudioPlayer implements AudioPlayer {
 		try {
 			AudioFile f = AudioFileIO.read(new File(currentPath));
 			Tag tag = f.getTag();
-			return new TrackDTO(tag);
+			return new TrackDTO(tag, f.getAudioHeader().getTrackLength());
 		} catch (CannotReadException | IOException | TagException | ReadOnlyFileException | InvalidAudioFrameException e) {
 			throw new TagException(e);
 		}
@@ -147,12 +134,6 @@ public class JavazoomAudioPlayer implements AudioPlayer {
 	public void setPosition(float position) throws AudioException {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public long getLength() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override
@@ -190,5 +171,10 @@ public class JavazoomAudioPlayer implements AudioPlayer {
 			public void opened(Object stream, Map properties) {
 			}
 		});
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		player = new ImprovedBasicPlayer();
 	}
 }
