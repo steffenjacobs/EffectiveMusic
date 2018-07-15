@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
+import me.steffenjacobs.effectivemusic.util.Base64Service;
 import me.steffenjacobs.effectivemusic.youtube.YoutubeManager;
 import me.steffenjacobs.effectivemusic.youtube.YoutubeNotAvailableException;
 
@@ -25,8 +26,14 @@ public class PlaylistController {
 	@Autowired
 	YoutubeManager youtubeManager;
 
+	@Autowired
+	Base64Service base64Service;
+
 	@PostMapping(value = "/music/playlist/enquene", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ResponseEntity<String> enquene(String path) throws MalformedURLException, YoutubeNotAvailableException {
+		if (base64Service.isBase64(path)) {
+			path = base64Service.decode(path);
+		}
 		if (path.startsWith("https://www.youtube.com/watch?v=")) {
 			playlistManager.queue(youtubeManager.getPlaybackUrl(path));
 		} else {

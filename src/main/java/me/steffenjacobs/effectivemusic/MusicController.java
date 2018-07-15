@@ -16,6 +16,7 @@ import me.steffenjacobs.effectivemusic.audio.AudioPlayerManager;
 import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
+import me.steffenjacobs.effectivemusic.util.Base64Service;
 import me.steffenjacobs.effectivemusic.youtube.YoutubeManager;
 
 /** @author Steffen Jacobs */
@@ -33,9 +34,15 @@ public class MusicController {
 
 	@Autowired
 	PlaylistManager playlistManager;
+	
+	@Autowired
+	Base64Service base64Service;
 
 	@PostMapping(value = "/music/play", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ResponseEntity<String> playSong(String path) throws MalformedURLException {
+		if(base64Service.isBase64(path)) {
+			path = base64Service.decode(path);
+		}
 		playlistManager.clearPlaylist();
 		if (path.startsWith("https://www.youtube.com/watch?v=")) {
 			playlistManager.queue(youtubeManager.getPlaybackUrl(path));
