@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import me.steffenjacobs.effectivemusic.audio.AudioEffectManager;
 import me.steffenjacobs.effectivemusic.audio.AudioPlayerManager;
+import me.steffenjacobs.effectivemusic.domain.LiveTrackDTO;
 import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
@@ -34,13 +35,13 @@ public class MusicController {
 
 	@Autowired
 	PlaylistManager playlistManager;
-	
+
 	@Autowired
 	Base64Service base64Service;
 
 	@PostMapping(value = "/music/play", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ResponseEntity<String> playSong(String path) throws MalformedURLException {
-		if(base64Service.isBase64(path)) {
+		if (base64Service.isBase64(path)) {
 			path = base64Service.decode(path);
 		}
 		playlistManager.clearPlaylist();
@@ -101,8 +102,13 @@ public class MusicController {
 	}
 
 	@GetMapping(value = "/music/info")
-	public ResponseEntity<TrackDTO> getTrackInfo() throws TagException {
+	public ResponseEntity<TrackDTO> getTrackInfo() {
 		return new ResponseEntity<TrackDTO>(audioPlayerManager.getTrackInformation(), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/music/live_info")
+	public ResponseEntity<LiveTrackDTO> getLiveTrackInfo() {
+		return new ResponseEntity<LiveTrackDTO>(audioPlayerManager.getLiveTrackInformation(), HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/music/fadeTo", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)

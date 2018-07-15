@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import me.steffenjacobs.effectivemusic.domain.LiveTrackDTO;
 import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
@@ -69,12 +70,14 @@ public class AudioPlayerManager implements InitializingBean {
 			ignoreNextStopFinishEvent.set(true);
 			getCurrentAudioPlayer().stop();
 		}
+		currentlyPlayed = null;
 	}
 
 	public void stop() {
 		if (getCurrentAudioPlayer().getStatus() == Status.PLAYING) {
 			getCurrentAudioPlayer().stop();
 		}
+		currentlyPlayed = null;
 	}
 
 	public void pause() {
@@ -105,8 +108,8 @@ public class AudioPlayerManager implements InitializingBean {
 		currentPlayer.setPosition(position);
 	}
 
-	public TrackDTO getTrackInformation() throws TagException {
-		return currentlyPlayed.getTrackDTO();
+	public TrackDTO getTrackInformation() {
+		return currentlyPlayed != null ? currentlyPlayed.getTrackDTO() : null;
 	}
 
 	public void addListener(AudioPlayerListener listener) {
@@ -153,6 +156,13 @@ public class AudioPlayerManager implements InitializingBean {
 		vlcPlayer.addListener(listener);
 		javazoomAudioPlayer.addListener(listener);
 		currentPlayer = vlcPlayer;
+	}
+
+	public LiveTrackDTO getLiveTrackInformation() {
+		LiveTrackDTO dto = new LiveTrackDTO(getTrackInformation());
+		dto.setPosition(getPosition());
+		dto.setVolume(getGain());
+		return dto;
 	}
 
 }

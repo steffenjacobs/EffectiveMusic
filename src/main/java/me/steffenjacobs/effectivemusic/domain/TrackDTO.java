@@ -6,8 +6,8 @@ import org.jaudiotagger.tag.Tag;
 /** @author Steffen Jacobs */
 public class TrackDTO {
 
-	private String artist, album, title, comment, year, track, disc_no, composer, artist_sort;
-	private long length;
+	protected String artist, album, title, comment, year, track, disc_no, composer, artist_sort;
+	protected long length;
 
 	public TrackDTO() {
 
