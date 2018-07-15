@@ -1,16 +1,8 @@
 package me.steffenjacobs.effectivemusic.audio;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Map;
 
-import org.jaudiotagger.audio.AudioFile;
-import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.audio.exceptions.CannotReadException;
-import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
-import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
-import org.jaudiotagger.tag.Tag;
-import org.jaudiotagger.tag.TagException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -20,7 +12,6 @@ import javazoom.jlgui.basicplayer.BasicPlayerEvent;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
 import me.steffenjacobs.effectivemusic.domain.Status;
-import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
 import me.steffenjacobs.effectivemusic.util.ImprovedBasicPlayer;
 
@@ -32,12 +23,10 @@ public class JavazoomAudioPlayer implements AudioPlayer, InitializingBean {
 	private ImprovedBasicPlayer player;
 
 	private double volume = 1;
-	private String currentPath = "";
 
 	@Override
 	public TrackMetadata playAudio(TrackMetadata metadata) throws AudioException {
-		currentPath = metadata.getPath();
-
+		
 		try {
 			player.open(new File(metadata.getPath()));
 			player.play();
@@ -111,17 +100,6 @@ public class JavazoomAudioPlayer implements AudioPlayer, InitializingBean {
 			player.seek(position);
 		} catch (BasicPlayerException e) {
 			throw new AudioException(e);
-		}
-	}
-
-	@Override
-	public TrackDTO getTrackInformation() throws TagException {
-		try {
-			AudioFile f = AudioFileIO.read(new File(currentPath));
-			Tag tag = f.getTag();
-			return new TrackDTO(tag, f.getAudioHeader().getTrackLength());
-		} catch (CannotReadException | IOException | TagException | ReadOnlyFileException | InvalidAudioFrameException e) {
-			throw new TagException(e);
 		}
 	}
 

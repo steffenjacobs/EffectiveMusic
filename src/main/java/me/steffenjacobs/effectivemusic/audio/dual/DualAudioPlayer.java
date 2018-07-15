@@ -1,6 +1,5 @@
 package me.steffenjacobs.effectivemusic.audio.dual;
 
-import org.jaudiotagger.tag.TagException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -10,7 +9,6 @@ import me.steffenjacobs.effectivemusic.audio.AudioPlayer;
 import me.steffenjacobs.effectivemusic.audio.AudioPlayerListener;
 import me.steffenjacobs.effectivemusic.audio.VLCMediaPlayerAdapter;
 import me.steffenjacobs.effectivemusic.domain.Status;
-import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
 
 /** @author Steffen Jacobs */
@@ -91,11 +89,6 @@ public class DualAudioPlayer implements AudioPlayer, InitializingBean {
 	@Override
 	public void setPosition(float position) {
 		currentPlayer.setPosition(position);
-	}
-
-	@Override
-	public TrackDTO getTrackInformation() throws TagException {
-		return currentPlayer.getTrackInformation();
 	}
 
 	@Override

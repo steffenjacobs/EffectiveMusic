@@ -1,12 +1,10 @@
 package me.steffenjacobs.effectivemusic.audio;
 
-import org.jaudiotagger.tag.TagException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import me.steffenjacobs.effectivemusic.domain.Status;
-import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
 
 /** @author Steffen Jacobs */
@@ -77,11 +75,6 @@ public class SmoothedAudioPlayer implements AudioPlayer {
 	@Override
 	public void setPosition(float position) {
 		vlcPlayerAdapter.setPosition(position);
-	}
-
-	@Override
-	public TrackDTO getTrackInformation() throws TagException {
-		return vlcPlayerAdapter.getTrackInformation();
 	}
 
 	@Override
