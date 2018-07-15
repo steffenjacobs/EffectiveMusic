@@ -55,7 +55,7 @@ public class AudioPlayerManager implements InitializingBean {
 				currentlyPlayed = vlcPlayer.playAudio(metadata);
 				currentPlayer = vlcPlayer;
 			}
-			currentlyPlayed.setTrackDTO(new TrackDTO(f.getTag(), f.getAudioHeader().getTrackLength()));
+			currentlyPlayed.setTrackDTO(new TrackDTO(f.getTag(), f.getAudioHeader().getTrackLength() * 1000));
 		} catch (CannotReadException | IOException | TagException | ReadOnlyFileException | InvalidAudioFrameException e) {
 
 			stopSilent();
