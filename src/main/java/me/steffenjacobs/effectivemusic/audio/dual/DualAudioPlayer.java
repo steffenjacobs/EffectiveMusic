@@ -7,11 +7,11 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import me.steffenjacobs.effectivemusic.audio.AudioPlayer;
+import me.steffenjacobs.effectivemusic.audio.AudioPlayerListener;
 import me.steffenjacobs.effectivemusic.audio.VLCMediaPlayerAdapter;
 import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
-import uk.co.caprica.vlcj.player.MediaPlayerEventListener;
 
 /** @author Steffen Jacobs */
 // @Component("dualPlayer")
@@ -108,7 +108,7 @@ public class DualAudioPlayer implements AudioPlayer, InitializingBean {
 	}
 
 	@Override
-	public void addListener(MediaPlayerEventListener listener) {
+	public void addListener(AudioPlayerListener listener) {
 		player1.addListener(listener);
 		player2.addListener(listener);
 	}

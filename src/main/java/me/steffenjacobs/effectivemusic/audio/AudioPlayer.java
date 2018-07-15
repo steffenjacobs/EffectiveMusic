@@ -5,7 +5,6 @@ import org.jaudiotagger.tag.TagException;
 import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
-import uk.co.caprica.vlcj.player.MediaPlayerEventListener;
 
 /** @author Steffen Jacobs */
 public interface AudioPlayer {
@@ -32,6 +31,6 @@ public interface AudioPlayer {
 
 	long getLength();
 
-	void addListener(MediaPlayerEventListener listener);
+	void addListener(AudioPlayerListener listener);
 
 }

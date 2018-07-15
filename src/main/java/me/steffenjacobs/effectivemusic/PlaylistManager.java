@@ -10,6 +10,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import me.steffenjacobs.effectivemusic.audio.AudioPlayer;
+import me.steffenjacobs.effectivemusic.audio.AudioPlayerListener;
 import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
 import uk.co.caprica.vlcj.player.MediaPlayer;
@@ -88,7 +89,7 @@ public class PlaylistManager {
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void registerListener() {
-		vlcPlayer.addListener(new VLCPlayerEventHandler() {
+		final VLCPlayerEventHandler handler = new VLCPlayerEventHandler() {
 			@Override
 			public void finished(MediaPlayer mediaPlayer) {
 				if (skip.get()) {
@@ -109,6 +110,13 @@ public class PlaylistManager {
 						}
 					}
 				}, DELAY_NEXT_SONG_MILLIS);
+			}
+		};
+		vlcPlayer.addListener(new AudioPlayerListener() {			
+			
+			@Override
+			public void onFinish() {
+				handler.finished(null);
 			}
 		});
 	}

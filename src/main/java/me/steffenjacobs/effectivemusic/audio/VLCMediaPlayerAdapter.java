@@ -23,7 +23,6 @@ import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
 import uk.co.caprica.vlcj.component.AudioMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.MediaPlayer;
-import uk.co.caprica.vlcj.player.MediaPlayerEventListener;
 import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
 /** @author Steffen Jacobs */
@@ -151,11 +150,18 @@ public class VLCMediaPlayerAdapter implements AudioPlayer {
 		}
 	}
 
-	public void addListener(MediaPlayerEventListener listener) {
+	@Override
+	public void addListener(final AudioPlayerListener listener) {
 		initIfNecessary();
-		mediaPlayer.addMediaPlayerEventListener(listener);
+		mediaPlayer.addMediaPlayerEventListener(new VLCPlayerEventHandler() {
+			@Override
+			public void finished(MediaPlayer mediaPlayer) {
+				listener.onFinish();
+			}
+		});
 	}
 
+	@Override
 	public long getLength() {
 		return mediaPlayer.getLength();
 	}

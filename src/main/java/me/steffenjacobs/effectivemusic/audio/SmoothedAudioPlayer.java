@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
-import uk.co.caprica.vlcj.player.MediaPlayerEventListener;
 
 /** @author Steffen Jacobs */
 @Component("vlcPlayer")
@@ -90,7 +89,7 @@ public class SmoothedAudioPlayer implements AudioPlayer {
 	}
 
 	@Override
-	public void addListener(MediaPlayerEventListener listener) {
+	public void addListener(AudioPlayerListener listener) {
 		vlcPlayerAdapter.addListener(listener);
 	}
 }
