@@ -35,13 +35,14 @@ public class JavazoomAudioPlayer implements AudioPlayer, InitializingBean {
 	private String currentPath = "";
 
 	@Override
-	public void playAudio(TrackMetadata metadata) throws AudioException {
+	public TrackMetadata playAudio(TrackMetadata metadata) throws AudioException {
 		currentPath = metadata.getPath();
 
 		try {
 			player.open(new File(metadata.getPath()));
 			player.play();
 			player.setGain(volume);
+			return metadata;
 		} catch (BasicPlayerException e) {
 			throw new AudioException(e);
 		}

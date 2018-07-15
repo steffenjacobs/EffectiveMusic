@@ -1,7 +1,10 @@
 package me.steffenjacobs.effectivemusic.youtube;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
+import java.net.Socket;
 import java.net.URL;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -30,7 +33,7 @@ public class YoutubeManager {
 	@Autowired
 	VLCMediaPlayerAdapter vlcPlayer;
 
-	public String playYoutube(String url) throws MalformedURLException {
+	/*public String playYoutube(String url) throws MalformedURLException {
 
 		final AtomicBoolean stop = new AtomicBoolean(false);
 
@@ -59,10 +62,22 @@ public class YoutubeManager {
 		}
 
 		return videoinfo.getTitle();
+	}*/
+	
+	private boolean pingHost(String url) {
+		try(Socket sock = new Socket()) {
+			sock.connect(new InetSocketAddress(url, 80));
+			return true;
+		} catch (IOException e) {
+			return false;
+		}
 	}
 
-	public TrackMetadata getPlaybackUrl(String videoUrl) throws MalformedURLException {
+	public TrackMetadata getPlaybackUrl(String videoUrl) throws MalformedURLException, YoutubeNotAvailableException {
 		URL web = new URL(videoUrl);
+		if(!pingHost(videoUrl)) {
+			throw new YoutubeNotAvailableException(videoUrl);
+		}
 
 		VGetParser user = VGet.parser(web);
 

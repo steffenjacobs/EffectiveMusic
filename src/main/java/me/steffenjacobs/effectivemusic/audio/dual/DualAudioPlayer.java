@@ -46,9 +46,10 @@ public class DualAudioPlayer implements AudioPlayer, InitializingBean {
 	}
 
 	@Override
-	public void playAudio(TrackMetadata metadata) {
+	public TrackMetadata playAudio(TrackMetadata metadata) {
 		currentPlayer.stop();
 		switchPlayer().playAudio(metadata);
+		return metadata;
 	}
 
 	@Override

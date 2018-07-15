@@ -9,7 +9,7 @@ import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
 /** @author Steffen Jacobs */
 public interface AudioPlayer {
 
-	void playAudio(TrackMetadata metadata);
+	TrackMetadata playAudio(TrackMetadata metadata);
 
 	void stop();
 

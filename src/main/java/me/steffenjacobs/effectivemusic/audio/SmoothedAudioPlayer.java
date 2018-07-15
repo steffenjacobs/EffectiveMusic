@@ -25,10 +25,11 @@ public class SmoothedAudioPlayer implements AudioPlayer {
 	private double gain = 100;
 
 	@Override
-	public void playAudio(TrackMetadata metadata) {
+	public TrackMetadata playAudio(TrackMetadata metadata) {
 		vlcPlayerAdapter.setGain(0);
-		vlcPlayerAdapter.playAudio(metadata);
+		metadata = vlcPlayerAdapter.playAudio(metadata);
 		audioEffectManager.fadeTo(gain, FADE_MILLIS, vlcPlayerAdapter);
+		return metadata;
 	}
 
 	@Override

@@ -27,8 +27,6 @@ import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
 @Scope("singleton")
 public class AudioPlayerManager implements InitializingBean {
 
-	private static final TrackDTO FORWARD = new TrackDTO();
-
 	@Autowired
 	AudioPlayer vlcPlayer;
 
@@ -48,22 +46,20 @@ public class AudioPlayerManager implements InitializingBean {
 		try {
 			AudioFile f = AudioFileIO.read(new File(currentlyPlayed.getPath()));
 			AudioHeader header = f.getAudioHeader();
-			System.out.println(header.getTrackLength());
 			stopSilent();
 
 			if (header.getFormat().startsWith("FLAC")) {
-				javazoomAudioPlayer.playAudio(metadata);
+				currentlyPlayed = javazoomAudioPlayer.playAudio(metadata);
 				currentPlayer = javazoomAudioPlayer;
 			} else {
-				vlcPlayer.playAudio(metadata);
+				currentlyPlayed = vlcPlayer.playAudio(metadata);
 				currentPlayer = vlcPlayer;
 			}
 			currentlyPlayed.setTrackDTO(new TrackDTO(f.getTag(), f.getAudioHeader().getTrackLength()));
 		} catch (CannotReadException | IOException | TagException | ReadOnlyFileException | InvalidAudioFrameException e) {
 
 			stopSilent();
-			vlcPlayer.playAudio(metadata);
-			currentlyPlayed.setTrackDTO(FORWARD);
+			currentlyPlayed = vlcPlayer.playAudio(metadata);
 			currentPlayer = vlcPlayer;
 		}
 	}
@@ -108,9 +104,6 @@ public class AudioPlayerManager implements InitializingBean {
 	}
 
 	public TrackDTO getTrackInformation() throws TagException {
-		if (currentlyPlayed.getTrackDTO() == FORWARD) {
-			return getCurrentAudioPlayer().getTrackInformation();
-		}
 		return currentlyPlayed.getTrackDTO();
 	}
 

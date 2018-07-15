@@ -70,4 +70,8 @@ public class TrackDTO {
 		return length;
 	}
 
+	public void setLength(long trackLength) {
+		this.length = trackLength;
+	}
+
 }

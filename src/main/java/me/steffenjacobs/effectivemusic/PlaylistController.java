@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
 import me.steffenjacobs.effectivemusic.youtube.YoutubeManager;
+import me.steffenjacobs.effectivemusic.youtube.YoutubeNotAvailableException;
 
 /** @author Steffen Jacobs */
 @Controller
@@ -25,7 +26,7 @@ public class PlaylistController {
 	YoutubeManager youtubeManager;
 
 	@PostMapping(value = "/music/playlist/enquene", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public ResponseEntity<String> enquene(String path) throws MalformedURLException {
+	public ResponseEntity<String> enquene(String path) throws MalformedURLException, YoutubeNotAvailableException {
 		if (path.startsWith("https://www.youtube.com/watch?v=")) {
 			playlistManager.queue(youtubeManager.getPlaybackUrl(path));
 		} else {

@@ -33,7 +33,7 @@ public class VLCMediaPlayerAdapter implements AudioPlayer {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AudioPlayer.class);
 
-	private static final String NATIVE_LIBRARY_SEARCH_PATH = "L:\\Programme\\VLC";
+	private static final String NATIVE_LIBRARY_SEARCH_PATH = "C:\\Program Files\\VideoLAN\\VLC";
 
 	private boolean initialized = false;
 
@@ -68,7 +68,8 @@ public class VLCMediaPlayerAdapter implements AudioPlayer {
 	}
 
 	@Override
-	public void playAudio(TrackMetadata metadata) {
+	public TrackMetadata playAudio(TrackMetadata metadata) {
+		System.out.println(metadata.getTrackDTO().getTitle());
 		initIfNecessary();
 		if (mediaPlayer.isPlaying()) {
 			mediaPlayer.stop();
@@ -76,7 +77,11 @@ public class VLCMediaPlayerAdapter implements AudioPlayer {
 		LOG.info("playing.");
 		mediaPlayer.playMedia(metadata.getPath());
 		currentlyPlayed = metadata;
+		if (currentlyPlayed.getTrackDTO().getLength() == 0) {
+			currentlyPlayed.getTrackDTO().setLength(mediaPlayer.getLength());
+		}
 		status = Status.PLAYING;
+		return currentlyPlayed;
 	}
 
 	@Override
