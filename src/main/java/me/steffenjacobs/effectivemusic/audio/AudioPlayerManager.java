@@ -72,35 +72,35 @@ public class AudioPlayerManager implements InitializingBean {
 	}
 
 	public void stop() {
-		vlcPlayer.stop();
+		currentPlayer.stop();
 	}
 
 	public void pause() {
-		vlcPlayer.pause();
+		currentPlayer.pause();
 	}
 
 	public void resume() {
-		vlcPlayer.resume();
+		currentPlayer.resume();
 	}
 
 	public Status getStatus() {
-		return vlcPlayer.getStatus();
+		return currentPlayer.getStatus();
 	}
 
 	public double getGain() {
-		return vlcPlayer.getGain();
+		return currentPlayer.getGain();
 	}
 
 	public void setGain(double value) {
-		vlcPlayer.setGain(value);
+		currentPlayer.setGain(value);
 	}
 
 	public float getPosition() {
-		return vlcPlayer.getPosition();
+		return currentPlayer.getPosition();
 	}
 
 	public void setPosition(float position) {
-		vlcPlayer.setPosition(position);
+		currentPlayer.setPosition(position);
 	}
 
 	public TrackDTO getTrackInformation() throws TagException {
