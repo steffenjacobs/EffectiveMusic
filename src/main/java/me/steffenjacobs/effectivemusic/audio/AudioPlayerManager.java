@@ -2,8 +2,8 @@ package me.steffenjacobs.effectivemusic.audio;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.jaudiotagger.audio.AudioFile;
@@ -37,7 +37,7 @@ public class AudioPlayerManager implements InitializingBean {
 
 	private TrackMetadata currentlyPlayed;
 
-	private List<AudioPlayerListener> listeners = new ArrayList<>();
+	private List<AudioPlayerListener> listeners = new CopyOnWriteArrayList<>();
 
 	private AtomicBoolean ignoreNextStopFinishEvent = new AtomicBoolean(false);
 
@@ -72,7 +72,9 @@ public class AudioPlayerManager implements InitializingBean {
 	}
 
 	public void stop() {
-		currentPlayer.stop();
+		if (getCurrentAudioPlayer().getStatus() == Status.PLAYING) {
+			getCurrentAudioPlayer().stop();
+		}
 	}
 
 	public void pause() {
@@ -126,7 +128,7 @@ public class AudioPlayerManager implements InitializingBean {
 
 			@Override
 			public void onStop() {
-				if (ignoreNextStopFinishEvent.getAndSet(false)) {
+				if (!ignoreNextStopFinishEvent.getAndSet(false)) {
 					listeners.forEach(l -> l.onStop());
 				}
 			}
@@ -143,7 +145,7 @@ public class AudioPlayerManager implements InitializingBean {
 
 			@Override
 			public void onFinish() {
-				if (ignoreNextStopFinishEvent.getAndSet(false)) {
+				if (!ignoreNextStopFinishEvent.getAndSet(false)) {
 					listeners.forEach(l -> l.onFinish());
 				}
 			}

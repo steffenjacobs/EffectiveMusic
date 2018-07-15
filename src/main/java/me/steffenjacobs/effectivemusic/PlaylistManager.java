@@ -113,8 +113,8 @@ public class PlaylistManager {
 				}, DELAY_NEXT_SONG_MILLIS);
 			}
 		};
-		audioPlayerManager.addListener(new AudioPlayerListener() {			
-			
+		audioPlayerManager.addListener(new AudioPlayerListener() {
+
 			@Override
 			public void onFinish() {
 				handler.finished(null);
