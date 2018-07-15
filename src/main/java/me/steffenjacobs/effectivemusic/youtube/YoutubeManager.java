@@ -64,18 +64,20 @@ public class YoutubeManager {
 		return videoinfo.getTitle();
 	}*/
 	
-	private boolean pingHost(String url) {
+	private boolean pingYoutube() {
 		try(Socket sock = new Socket()) {
-			sock.connect(new InetSocketAddress(url, 80));
+			sock.connect(new InetSocketAddress("youtube.com", 80));
+			sock.close();
 			return true;
 		} catch (IOException e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
 
 	public TrackMetadata getPlaybackUrl(String videoUrl) throws MalformedURLException, YoutubeNotAvailableException {
 		URL web = new URL(videoUrl);
-		if(!pingHost(videoUrl)) {
+		if(!pingYoutube()) {
 			throw new YoutubeNotAvailableException(videoUrl);
 		}
 
