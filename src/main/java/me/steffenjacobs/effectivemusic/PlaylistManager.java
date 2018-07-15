@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import me.steffenjacobs.effectivemusic.audio.AudioPlayer;
 import me.steffenjacobs.effectivemusic.audio.AudioPlayerListener;
+import me.steffenjacobs.effectivemusic.audio.AudioPlayerManager;
 import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
 import uk.co.caprica.vlcj.player.MediaPlayer;
@@ -30,12 +31,12 @@ public class PlaylistManager {
 	private AtomicBoolean skip = new AtomicBoolean(false);
 
 	@Autowired
-	AudioPlayer vlcPlayer;
+	AudioPlayerManager audioPlayerManager;
 
 	public void queue(TrackMetadata track) {
 		playlist.add(track);
-		if (PLAY_IMMEDIATELY && vlcPlayer.getStatus() == Status.STOPPED) {
-			vlcPlayer.playAudio(track);
+		if (PLAY_IMMEDIATELY && audioPlayerManager.getStatus() == Status.STOPPED) {
+			audioPlayerManager.playAudio(track);
 		}
 	}
 
@@ -51,10 +52,10 @@ public class PlaylistManager {
 	public void playNext() {
 		skip.set(true);
 		if (currentIndex + 1 <= playlist.size() - 1) {
-			vlcPlayer.playAudio(playlist.get(++currentIndex));
+			audioPlayerManager.playAudio(playlist.get(++currentIndex));
 		} else if (loopAll) {
 			currentIndex = 0;
-			vlcPlayer.playAudio(playlist.get(currentIndex));
+			audioPlayerManager.playAudio(playlist.get(currentIndex));
 		}
 		skip.set(false);
 	}
@@ -62,10 +63,10 @@ public class PlaylistManager {
 	public void playPrevious() {
 		skip.set(true);
 		if (currentIndex - 1 >= 0) {
-			vlcPlayer.playAudio(playlist.get(--currentIndex));
+			audioPlayerManager.playAudio(playlist.get(--currentIndex));
 		} else if (loopAll) {
 			currentIndex = playlist.size() - 1;
-			vlcPlayer.playAudio(playlist.get(currentIndex));
+			audioPlayerManager.playAudio(playlist.get(currentIndex));
 		}
 		skip.set(false);
 	}
@@ -84,7 +85,7 @@ public class PlaylistManager {
 
 	public void startPlaylist() {
 		currentIndex = 0;
-		vlcPlayer.playAudio(playlist.get(currentIndex));
+		audioPlayerManager.playAudio(playlist.get(currentIndex));
 	}
 
 	@EventListener(ApplicationReadyEvent.class)
@@ -97,7 +98,7 @@ public class PlaylistManager {
 				}
 
 				final boolean l = loopOne;
-				final AudioPlayer p = vlcPlayer;
+				final AudioPlayer p = audioPlayerManager.getCurrentAudioPlayer();
 				final int i = currentIndex;
 
 				new java.util.Timer().schedule(new java.util.TimerTask() {
@@ -112,7 +113,7 @@ public class PlaylistManager {
 				}, DELAY_NEXT_SONG_MILLIS);
 			}
 		};
-		vlcPlayer.addListener(new AudioPlayerListener() {			
+		audioPlayerManager.addListener(new AudioPlayerListener() {			
 			
 			@Override
 			public void onFinish() {
@@ -124,7 +125,7 @@ public class PlaylistManager {
 	public void clearPlaylist() {
 		skip.set(true);
 		this.playlist.clear();
-		vlcPlayer.stop();
+		audioPlayerManager.stop();
 		skip.set(false);
 	}
 }
