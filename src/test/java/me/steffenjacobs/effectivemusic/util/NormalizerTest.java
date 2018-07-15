@@ -62,4 +62,16 @@ public class NormalizerTest {
 		double result = Normalizer.mapZeroToOneToZeroToOnehundred(0.5);
 		assertEquals(50, result, 0.01);
 	}
+
+	@Test
+	public void testMapToZeroToOne() {
+		double result = Normalizer.mapToZeroToOne(50, new Interval(0, 100));
+		assertEquals(0.5, result, 0.01);
+	}
+
+	@Test
+	public void testMapZeroToOneToX() {
+		double result = Normalizer.mapZeroToOneToX(.5, new Interval(0, 100));
+		assertEquals(50, result, 0.01);
+	}
 }
