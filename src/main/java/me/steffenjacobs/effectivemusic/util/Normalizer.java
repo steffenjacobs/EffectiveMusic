@@ -3,7 +3,7 @@ package me.steffenjacobs.effectivemusic.util;
 /** @author Steffen Jacobs */
 public class Normalizer {
 
-	static class Interval {
+	public static class Interval {
 		private final double start, end;
 
 		public Interval(double start, double end) {
@@ -27,6 +27,14 @@ public class Normalizer {
 
 	public static double mapZeroToOnehundredToZeroToOne(double input) {
 		return mapRelativeValue(input, new Interval(0, 100), new Interval(0, 1));
+	}
+
+	public static double mapToZeroToOne(double input, Interval source) {
+		return mapRelativeValue(input, source, new Interval(0, 1));
+	}
+
+	public static double mapZeroToOneToX(double input, Interval target) {
+		return mapRelativeValue(input, new Interval(0, 1), target);
 	}
 
 	public static double mapRelativeValue(double input, Interval source, Interval target) {

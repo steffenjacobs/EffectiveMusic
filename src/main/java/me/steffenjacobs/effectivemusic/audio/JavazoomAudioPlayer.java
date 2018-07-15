@@ -1,19 +1,22 @@
 package me.steffenjacobs.effectivemusic.audio;
 
 import java.io.File;
-import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import javazoom.jlgui.basicplayer.BasicController;
 import javazoom.jlgui.basicplayer.BasicPlayerEvent;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
 import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
 import me.steffenjacobs.effectivemusic.util.ImprovedBasicPlayer;
+import me.steffenjacobs.effectivemusic.util.Normalizer;
+import me.steffenjacobs.effectivemusic.util.Normalizer.Interval;
 
 /** @author Steffen Jacobs */
 @Component
@@ -22,10 +25,13 @@ public class JavazoomAudioPlayer implements AudioPlayer, InitializingBean {
 
 	private ImprovedBasicPlayer player;
 	private double volume = 100;
+	private TrackMetadata metadata;
+
+	private AtomicBoolean suppressEvent = new AtomicBoolean(false);
 
 	@Override
 	public TrackMetadata playAudio(TrackMetadata metadata) throws AudioException {
-
+		this.metadata = metadata;
 		try {
 			player.open(new File(metadata.getPath()));
 			player.play();
@@ -84,11 +90,6 @@ public class JavazoomAudioPlayer implements AudioPlayer, InitializingBean {
 	}
 
 	// @Override
-	public long getFramePosition() {
-		return player.getFramePosition();
-	}
-
-	// @Override
 	public long getMicrosecondPosition() {
 		return player.getMicrosecondPosition();
 	}
@@ -104,24 +105,69 @@ public class JavazoomAudioPlayer implements AudioPlayer, InitializingBean {
 
 	@Override
 	public float getPosition() {
-		// TODO Auto-generated method stub
-		return 0;
+		return (float) Normalizer.mapToZeroToOne(player.getFramePosition(), new Interval(0, player.getFrameCount()));
 	}
 
 	@Override
 	public void setPosition(float position) throws AudioException {
-		// TODO Auto-generated method stub
+		try {
+			long pos = (long) Normalizer.mapZeroToOneToX(position, new Interval(0, player.getFrameCount()));
+			if (player.setFramePosition(pos)) {
+				suppressEvent.set(true);
 
+				AtomicBoolean once = new AtomicBoolean(false);
+				final BasicPlayerListener l = new DefaultBasicPlayerListener() {
+
+					@Override
+					public void stateUpdated(BasicPlayerEvent event) {
+						switch (event.getCode()) {
+						case BasicPlayerEvent.STOPPED:
+							if (!once.getAndSet(true)) {
+								playAudio(metadata);
+							}
+							break;
+						case BasicPlayerEvent.PLAYING:
+							new Timer().schedule(new TimerTask() {
+								@Override
+								public void run() {
+									try {
+										player.setFramePosition(pos);
+										suppressEvent.set(false);
+									} catch (BasicPlayerException e) {
+										e.printStackTrace();
+									}
+								}
+							}, 1000);
+
+							player.removeBasicPlayerListener(this);
+							break;
+						case BasicPlayerEvent.PAUSED:
+							break;
+						case BasicPlayerEvent.RESUMED:
+							break;
+						}
+					}
+				};
+				player.addBasicPlayerListener(l);
+				player.stop();
+			}
+		} catch (BasicPlayerException e) {
+			throw new AudioException(e);
+		}
 	}
 
 	@Override
 	public void addListener(final AudioPlayerListener listener) {
-		player.addBasicPlayerListener(new BasicPlayerListener() {
+		player.addBasicPlayerListener(new DefaultBasicPlayerListener() {
 
 			@Override
 			public void stateUpdated(BasicPlayerEvent event) {
+				if (suppressEvent.get()) {
+					return;
+				}
 				switch (event.getCode()) {
 				case BasicPlayerEvent.STOPPED:
+					System.out.println("in-stop");
 					listener.onStop();
 					listener.onFinish();
 					break;
@@ -135,18 +181,6 @@ public class JavazoomAudioPlayer implements AudioPlayer, InitializingBean {
 					listener.onResume();
 					break;
 				}
-			}
-
-			@Override
-			public void setController(BasicController controller) {
-			}
-
-			@Override
-			public void progress(int bytesread, long microseconds, byte[] pcmdata, Map properties) {
-			}
-
-			@Override
-			public void opened(Object stream, Map properties) {
 			}
 		});
 	}
