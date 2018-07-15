@@ -63,21 +63,21 @@ public class YoutubeManager {
 
 		return videoinfo.getTitle();
 	}*/
-	
+
 	private boolean pingYoutube() {
-		try(Socket sock = new Socket()) {
+		try (Socket sock = new Socket()) {
 			sock.connect(new InetSocketAddress("youtube.com", 80));
 			sock.close();
 			return true;
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.info("Could not reach youtube.com", e);
 			return false;
 		}
 	}
 
 	public TrackMetadata getPlaybackUrl(String videoUrl) throws MalformedURLException, YoutubeNotAvailableException {
 		URL web = new URL(videoUrl);
-		if(!pingYoutube()) {
+		if (!pingYoutube()) {
 			throw new YoutubeNotAvailableException(videoUrl);
 		}
 
@@ -101,6 +101,7 @@ public class YoutubeManager {
 					TrackDTO dto = new TrackDTO();
 					dto.setTitle(videoinfo.getTitle());
 					meta.setTrackDTO(dto);
+					LOG.info("Playback URL for {} is {}", videoUrl, d.getSource().toString());
 					return meta;
 				}
 			}

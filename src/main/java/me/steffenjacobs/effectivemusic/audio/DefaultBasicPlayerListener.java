@@ -7,30 +7,21 @@ import javazoom.jlgui.basicplayer.BasicPlayerEvent;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
 
 /** @author Steffen Jacobs */
-public class DefaultBasicPlayerListener implements BasicPlayerListener{
+public class DefaultBasicPlayerListener implements BasicPlayerListener {
 
 	@Override
-	public void opened(Object stream, Map properties) {
-		// TODO Auto-generated method stub
-		
+	public void opened(Object stream, @SuppressWarnings("rawtypes") Map properties) {
 	}
 
 	@Override
-	public void progress(int bytesread, long microseconds, byte[] pcmdata, Map properties) {
-		// TODO Auto-generated method stub
-		
+	public void progress(int bytesread, long microseconds, byte[] pcmdata, @SuppressWarnings("rawtypes") Map properties) {
 	}
 
 	@Override
 	public void stateUpdated(BasicPlayerEvent event) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void setController(BasicController controller) {
-		// TODO Auto-generated method stub
-		
 	}
-
 }
