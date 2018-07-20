@@ -1,0 +1,959 @@
+{
+	"info": {
+		"_postman_id": "e168a7de-2330-4db5-a167-9f79caad2a8c",
+		"name": "EffectiveMusic",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Playlist",
+			"description": "",
+			"item": [
+				{
+					"name": "Enquene 1",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "path",
+									"value": "M:\\Music_HQ\\Frozen\\Kristen Anderson-Lopez & Robert Lopez - Let It Go.flac",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/playlist/enquene",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"playlist",
+								"enquene"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enquene 2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "path",
+									"value": "https://www.youtube.com/watch?v=KkDolOm2UlY",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/playlist/enquene",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"playlist",
+								"enquene"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enquene 3",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "path",
+									"value": "M:\\Music_HQ\\Justin Bieber\\Believe\\Justin Bieber feat. Big Sean - As Long as You Love Me.flac",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/playlist/enquene",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"playlist",
+								"enquene"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enqueue 4",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "path",
+									"value": "https://www.youtube.com/watch?v=KNDT7EInclo",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/playlist/enquene",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"playlist",
+								"enquene"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Next",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "path",
+									"value": "M:\\Music_HQ\\Frozen\\Kristen Anderson-Lopez & Robert Lopez - Let It Go.flac",
+									"description": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/playlist/next",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"playlist",
+								"next"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Previous",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "path",
+									"value": "M:\\Music_HQ\\Frozen\\Kristen Anderson-Lopez & Robert Lopez - Let It Go.flac",
+									"description": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/playlist/previous",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"playlist",
+								"previous"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Dequene",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "index",
+									"value": "0",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/playlist/dequene",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"playlist",
+								"dequene"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get playlist",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "index",
+									"value": "0",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/playlist",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"playlist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "set loop one",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "value",
+									"value": "true",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/playlist/loop_one",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"playlist",
+								"loop_one"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "set loop all",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "value",
+									"value": "true",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/playlist/loop_all",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"playlist",
+								"loop_all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "start playlist",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "value",
+									"value": "false",
+									"description": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/playlist/play",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"playlist",
+								"play"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Playback",
+			"description": "",
+			"item": [
+				{
+					"name": "Play File",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "path",
+									"value": "M:\\Music_HQ\\Frozen\\Kristen Anderson-Lopez & Robert Lopez - Let It Go.flac",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/play",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"play"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Play Youtube",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "path",
+									"value": "https://www.youtube.com/watch?v=KkDolOm2UlY",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/play",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"play"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Stop",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "path",
+									"value": "M:\\Music_HQ\\Portal 2 OST\\Portal2-24-Robots_FTW.mp3",
+									"description": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/stop",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"stop"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pause",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "path",
+									"value": "M:\\Music_HQ\\Portal 2 OST\\Portal2-24-Robots_FTW.mp3",
+									"description": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/pause",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"pause"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Resume",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "path",
+									"value": "M:\\Music_HQ\\Portal 2 OST\\Portal2-24-Robots_FTW.mp3",
+									"description": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/resume",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"resume"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fade Out",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "gain",
+									"value": "0",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "millis",
+									"value": "10000",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/fadeTo",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"fadeTo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fade In",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "gain",
+									"value": "100",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "millis",
+									"value": "5000",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/fadeTo",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"fadeTo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Track Info",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "path",
+									"value": "M:\\Music_HQ\\Frozen\\Kristen Anderson-Lopez & Robert Lopez - Let It Go.flac",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/info",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Live Track Info",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "path",
+									"value": "M:\\Music_HQ\\Frozen\\Kristen Anderson-Lopez & Robert Lopez - Let It Go.flac",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/info",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Positon",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "path",
+									"value": "M:\\Music_HQ\\Portal 2 OST\\Portal2-24-Robots_FTW.mp3",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/position",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"position"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "set Position",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "position",
+									"value": "0.25",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/position",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"position"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "set Gain",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "gain",
+									"value": "50",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/gain",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"gain"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Gain",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "gain",
+									"value": "0.1",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/gain",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"gain"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Status",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "path",
+									"value": "M:\\Music_HQ\\Portal 2 OST\\Portal2-24-Robots_FTW.mp3",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/status",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Length",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "path",
+									"value": "M:\\Music_HQ\\Portal 2 OST\\Portal2-24-Robots_FTW.mp3",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/music/length",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"music",
+								"length"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
