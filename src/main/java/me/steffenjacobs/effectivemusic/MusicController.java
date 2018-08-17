@@ -83,6 +83,7 @@ public class MusicController {
 		return new ResponseEntity<String>("gain: " + gain, HttpStatus.OK);
 	}
 
+	/** gain from 0-100 */
 	@PostMapping(value = "/music/gain", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ResponseEntity<String> setGain(double gain) {
 		audioPlayerManager.setGain(gain);
@@ -95,6 +96,7 @@ public class MusicController {
 		return new ResponseEntity<String>("position: " + position + "%", HttpStatus.OK);
 	}
 
+	/** position in percent */
 	@PostMapping(value = "/music/position", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ResponseEntity<String> setPosition(float position) {
 		audioPlayerManager.setPosition(position);

@@ -1,7 +1,6 @@
 package me.steffenjacobs.effectivemusic;
 
 import java.net.MalformedURLException;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
+import me.steffenjacobs.effectivemusic.domain.TrackMetadataList;
 import me.steffenjacobs.effectivemusic.util.Base64Service;
 import me.steffenjacobs.effectivemusic.youtube.YoutubeManager;
 import me.steffenjacobs.effectivemusic.youtube.YoutubeNotAvailableException;
@@ -79,8 +79,8 @@ public class PlaylistController {
 	}
 
 	@GetMapping(value = "/music/playlist")
-	public ResponseEntity<List<TrackMetadata>> getPlaylist() {
-		return new ResponseEntity<List<TrackMetadata>>(playlistManager.getPlaylist(), HttpStatus.OK);
+	public ResponseEntity<TrackMetadataList> getPlaylist() {
+		return new ResponseEntity<TrackMetadataList>(new TrackMetadataList(playlistManager.getPlaylist()), HttpStatus.OK);
 	}
 
 }
