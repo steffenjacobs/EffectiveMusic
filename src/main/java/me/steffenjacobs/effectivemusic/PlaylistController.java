@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import me.steffenjacobs.effectivemusic.PlaylistManager.LOOP_STATUS;
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
 import me.steffenjacobs.effectivemusic.domain.TrackMetadataList;
 import me.steffenjacobs.effectivemusic.util.Base64Service;
@@ -48,16 +49,16 @@ public class PlaylistController {
 		return new ResponseEntity<String>("Removed file from playlist: " + index + " - " + val, HttpStatus.ACCEPTED);
 	}
 
-	@PostMapping(value = "/music/playlist/loop_all", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public ResponseEntity<String> setLoopAll(boolean value) {
-		playlistManager.setLoopAll(value);
-		return new ResponseEntity<String>("set loop-all to " + value, HttpStatus.OK);
+	/** no loop: 0, loop once: 1, loop all: 2; */
+	@PostMapping(value = "/music/playlist/loop", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public ResponseEntity<String> setLoopAll(int value) {
+		playlistManager.setLoopStatus(LOOP_STATUS.fromValue(value));
+		return new ResponseEntity<String>("set loop-all to " + LOOP_STATUS.fromValue(value), HttpStatus.OK);
 	}
 
-	@PostMapping(value = "/music/playlist/loop_one", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public ResponseEntity<String> setLoopOne(boolean value) {
-		playlistManager.setLoopOne(value);
-		return new ResponseEntity<String>("set loop-one to " + value, HttpStatus.OK);
+	@GetMapping(value = "/music/playlist/loop")
+	public ResponseEntity<Integer> getLoop() {
+		return new ResponseEntity<Integer>(playlistManager.getLoopStatus().getValue(), HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/music/playlist/next")

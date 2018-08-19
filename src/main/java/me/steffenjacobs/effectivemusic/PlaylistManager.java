@@ -29,10 +29,35 @@ import uk.co.caprica.vlcj.player.MediaPlayer;
 @Component
 public class PlaylistManager {
 
+	public static enum LOOP_STATUS {
+		LOOP_ONE(1), LOOP_ALL(2), NO_LOOP(0);
+
+		private final int value;
+
+		private LOOP_STATUS(int value) {
+			this.value = value;
+		}
+
+		public static LOOP_STATUS fromValue(int value) {
+			switch (value) {
+			case 1:
+				return LOOP_ONE;
+			case 2:
+				return LOOP_ALL;
+			default:
+				return NO_LOOP;
+			}
+		}
+
+		public int getValue() {
+			return value;
+		}
+	}
+
 	private static final long DELAY_NEXT_SONG_MILLIS = 500;
 	private static final boolean PLAY_IMMEDIATELY = true;
 
-	private boolean loopAll = true, loopOne = false;
+	private LOOP_STATUS loopStatus = LOOP_STATUS.LOOP_ALL;
 
 	private final List<TrackMetadata> playlist = new ArrayList<>();
 	private int currentIndex = 0;
@@ -43,7 +68,7 @@ public class PlaylistManager {
 	AudioPlayerManager audioPlayerManager;
 
 	public void queue(TrackMetadata track) {
-		if(track.getTrackDTO()==null) {
+		if (track.getTrackDTO() == null) {
 			track.setTrackDTO(getTrackInfo(track.getPath()));
 		}
 		playlist.add(track);
@@ -51,6 +76,7 @@ public class PlaylistManager {
 			audioPlayerManager.playAudio(track);
 		}
 	}
+
 	public TrackDTO getTrackInfo(String path) {
 		try {
 			AudioFile f = AudioFileIO.read(new File(path));
@@ -74,7 +100,7 @@ public class PlaylistManager {
 		skip.set(true);
 		if (currentIndex + 1 <= playlist.size() - 1) {
 			audioPlayerManager.playAudio(playlist.get(++currentIndex));
-		} else if (loopAll) {
+		} else if (loopStatus == LOOP_STATUS.LOOP_ALL) {
 			currentIndex = 0;
 			audioPlayerManager.playAudio(playlist.get(currentIndex));
 		}
@@ -85,7 +111,7 @@ public class PlaylistManager {
 		skip.set(true);
 		if (currentIndex - 1 >= 0) {
 			audioPlayerManager.playAudio(playlist.get(--currentIndex));
-		} else if (loopAll) {
+		} else if (loopStatus == LOOP_STATUS.LOOP_ALL) {
 			currentIndex = playlist.size() - 1;
 			audioPlayerManager.playAudio(playlist.get(currentIndex));
 		}
@@ -96,12 +122,12 @@ public class PlaylistManager {
 		return playlist;
 	}
 
-	public void setLoopAll(boolean value) {
-		loopAll = value;
+	public void setLoopStatus(LOOP_STATUS loopStatus) {
+		this.loopStatus = loopStatus;
 	}
-
-	public void setLoopOne(boolean value) {
-		loopOne = value;
+	
+	public LOOP_STATUS getLoopStatus() {
+		return loopStatus;
 	}
 
 	public void startPlaylist() {
@@ -118,7 +144,7 @@ public class PlaylistManager {
 					return;
 				}
 
-				final boolean l = loopOne;
+				final boolean l = loopStatus == LOOP_STATUS.LOOP_ONE;
 				final AudioPlayer p = audioPlayerManager.getCurrentAudioPlayer();
 				final int i = currentIndex;
 

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import me.steffenjacobs.effectivemusic.audio.AudioEffectManager;
 import me.steffenjacobs.effectivemusic.audio.AudioPlayerManager;
 import me.steffenjacobs.effectivemusic.domain.LiveTrackDTO;
+import me.steffenjacobs.effectivemusic.domain.PlayerInformationDTO;
 import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
@@ -123,6 +124,17 @@ public class MusicController {
 	public ResponseEntity<String> getLength() throws TagException {
 		long length = audioPlayerManager.getTrackInformation().getLength();
 		return new ResponseEntity<String>("length: " + length + "ms", HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/music/player")
+	public ResponseEntity<PlayerInformationDTO> getPlayerInformation() {
+		PlayerInformationDTO dto = new PlayerInformationDTO();
+		dto.setStatus(audioPlayerManager.getStatus().toString());
+		dto.setVolume(audioPlayerManager.getGain());
+		dto.setLoopStatus(playlistManager.getLoopStatus().getValue());
+		dto.setMute(false);
+		return new ResponseEntity<PlayerInformationDTO>(dto, HttpStatus.OK);
+
 	}
 
 }
