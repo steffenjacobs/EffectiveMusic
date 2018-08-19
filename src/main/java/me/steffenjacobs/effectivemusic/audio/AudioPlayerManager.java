@@ -41,7 +41,7 @@ public class AudioPlayerManager implements InitializingBean {
 	private List<AudioPlayerListener> listeners = new CopyOnWriteArrayList<>();
 
 	private AtomicBoolean ignoreNextStopFinishEvent = new AtomicBoolean(false);
-
+	
 	public void playAudio(TrackMetadata metadata) {
 		currentlyPlayed = metadata;
 		try {
@@ -56,7 +56,7 @@ public class AudioPlayerManager implements InitializingBean {
 				currentlyPlayed = vlcPlayer.playAudio(metadata);
 				currentPlayer = vlcPlayer;
 			}
-			currentlyPlayed.setTrackDTO(new TrackDTO(f.getTag(), f.getAudioHeader().getTrackLength() * 1000));
+			currentlyPlayed.setTrackDTO(new TrackDTO(f.getTag(), header.getTrackLength() * 1000));
 		} catch (CannotReadException | IOException | TagException | ReadOnlyFileException | InvalidAudioFrameException e) {
 
 			stopSilent();

@@ -1,9 +1,17 @@
 package me.steffenjacobs.effectivemusic;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.exceptions.CannotReadException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+import org.jaudiotagger.tag.TagException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -13,6 +21,7 @@ import me.steffenjacobs.effectivemusic.audio.AudioPlayer;
 import me.steffenjacobs.effectivemusic.audio.AudioPlayerListener;
 import me.steffenjacobs.effectivemusic.audio.AudioPlayerManager;
 import me.steffenjacobs.effectivemusic.domain.Status;
+import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
 import uk.co.caprica.vlcj.player.MediaPlayer;
 
@@ -34,10 +43,22 @@ public class PlaylistManager {
 	AudioPlayerManager audioPlayerManager;
 
 	public void queue(TrackMetadata track) {
+		if(track.getTrackDTO()==null) {
+			track.setTrackDTO(getTrackInfo(track.getPath()));
+		}
 		playlist.add(track);
 		if (PLAY_IMMEDIATELY && audioPlayerManager.getStatus() == Status.STOPPED) {
 			audioPlayerManager.playAudio(track);
 		}
+	}
+	public TrackDTO getTrackInfo(String path) {
+		try {
+			AudioFile f = AudioFileIO.read(new File(path));
+			return new TrackDTO(f.getTag(), f.getAudioHeader().getTrackLength() * 1000);
+		} catch (CannotReadException | IOException | TagException | ReadOnlyFileException | InvalidAudioFrameException e) {
+			e.printStackTrace();
+		}
+		return new TrackDTO();
 	}
 
 	public boolean dequeue(int index) {
