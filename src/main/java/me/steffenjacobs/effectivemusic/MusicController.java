@@ -51,79 +51,79 @@ public class MusicController {
 		} else {
 			playlistManager.queue(new TrackMetadata(path));
 		}
-		return new ResponseEntity<String>("Playing file " + path, HttpStatus.ACCEPTED);
+		return new ResponseEntity<>("Playing file " + path, HttpStatus.ACCEPTED);
 	}
 
 	@PostMapping(value = "/music/stop")
 	public ResponseEntity<String> stop() {
 		audioPlayerManager.stop();
-		return new ResponseEntity<String>("Stopped music", HttpStatus.OK);
+		return new ResponseEntity<>("Stopped music", HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/music/pause")
 	public ResponseEntity<String> pauseSong() {
 		audioPlayerManager.pause();
-		return new ResponseEntity<String>("Paused", HttpStatus.OK);
+		return new ResponseEntity<>("Paused", HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/music/resume")
 	public ResponseEntity<String> resumeSong() {
 		audioPlayerManager.resume();
-		return new ResponseEntity<String>("Resumed", HttpStatus.OK);
+		return new ResponseEntity<>("Resumed", HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/music/status")
 	public ResponseEntity<String> getStatus() {
 		Status status = audioPlayerManager.getStatus();
-		return new ResponseEntity<String>("status: " + status, HttpStatus.OK);
+		return new ResponseEntity<>("status: " + status, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/music/gain")
 	public ResponseEntity<String> getGain() {
 		double gain = audioPlayerManager.getGain();
-		return new ResponseEntity<String>("gain: " + gain, HttpStatus.OK);
+		return new ResponseEntity<>("gain: " + gain, HttpStatus.OK);
 	}
 
 	/** gain from 0-100 */
 	@PostMapping(value = "/music/gain", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ResponseEntity<String> setGain(double gain) {
 		audioPlayerManager.setGain(gain);
-		return new ResponseEntity<String>("gain: " + gain, HttpStatus.OK);
+		return new ResponseEntity<>("gain: " + gain, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/music/position")
 	public ResponseEntity<String> getPosition() {
 		float position = audioPlayerManager.getPosition();
-		return new ResponseEntity<String>("position: " + position + "%", HttpStatus.OK);
+		return new ResponseEntity<>("position: " + position + "%", HttpStatus.OK);
 	}
 
 	/** position in percent */
 	@PostMapping(value = "/music/position", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ResponseEntity<String> setPosition(float position) {
 		audioPlayerManager.setPosition(position);
-		return new ResponseEntity<String>("position: " + position, HttpStatus.OK);
+		return new ResponseEntity<>("position: " + position, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/music/info")
 	public ResponseEntity<TrackDTO> getTrackInfo() {
-		return new ResponseEntity<TrackDTO>(audioPlayerManager.getTrackInformation(), HttpStatus.OK);
+		return new ResponseEntity<>(audioPlayerManager.getTrackInformation(), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/music/live_info")
 	public ResponseEntity<LiveTrackDTO> getLiveTrackInfo() {
-		return new ResponseEntity<LiveTrackDTO>(audioPlayerManager.getLiveTrackInformation(), HttpStatus.OK);
+		return new ResponseEntity<>(audioPlayerManager.getLiveTrackInformation(), HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/music/fadeTo", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ResponseEntity<String> fadeTo(double gain, long millis) {
 		audioEffectManager.fadeTo(gain, millis, audioPlayerManager.getCurrentAudioPlayer());
-		return new ResponseEntity<String>("fading...", HttpStatus.OK);
+		return new ResponseEntity<>("fading...", HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/music/length")
 	public ResponseEntity<String> getLength() throws TagException {
 		long length = audioPlayerManager.getTrackInformation().getLength();
-		return new ResponseEntity<String>("length: " + length + "ms", HttpStatus.OK);
+		return new ResponseEntity<>("length: " + length + "ms", HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/music/player")
@@ -133,7 +133,7 @@ public class MusicController {
 		dto.setVolume(audioPlayerManager.getGain());
 		dto.setLoopStatus(playlistManager.getLoopStatus().getValue());
 		dto.setMute(false);
-		return new ResponseEntity<PlayerInformationDTO>(dto, HttpStatus.OK);
+		return new ResponseEntity<>(dto, HttpStatus.OK);
 
 	}
 
