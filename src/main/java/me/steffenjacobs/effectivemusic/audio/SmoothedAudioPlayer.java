@@ -1,11 +1,15 @@
 package me.steffenjacobs.effectivemusic.audio;
 
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
+import me.steffenjacobs.effectivemusic.util.Wrapper;
 
 /** @author Steffen Jacobs */
 @Component("vlcPlayer")
@@ -22,18 +26,31 @@ public class SmoothedAudioPlayer implements AudioPlayer {
 
 	private double gain = 100;
 
+	private final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
+
 	@Override
-	public TrackMetadata playAudio(TrackMetadata metadata) {
+	public TrackMetadata playAudio(final TrackMetadata metadata) {
+		gain = vlcPlayerAdapter.getGain();
+		Wrapper<TrackMetadata> meta = new Wrapper<>();
 		vlcPlayerAdapter.setGain(0);
-		metadata = vlcPlayerAdapter.playAudio(metadata);
-		audioEffectManager.fadeTo(gain, FADE_MILLIS, vlcPlayerAdapter);
-		return metadata;
+		executor.schedule(() -> {
+			meta.setValue(vlcPlayerAdapter.playAudio(metadata));
+			audioEffectManager.fadeTo(gain, FADE_MILLIS, vlcPlayerAdapter);
+		}, 500, TimeUnit.MILLISECONDS);
+		try {
+			executor.awaitTermination(2, TimeUnit.SECONDS);
+			return meta.getValue();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public void stop() {
 		audioEffectManager.fadeTo(0, FADE_MILLIS, (() -> {
 			vlcPlayerAdapter.stop();
+			vlcPlayerAdapter.setGain(gain);
 		}), vlcPlayerAdapter);
 	}
 
@@ -41,13 +58,16 @@ public class SmoothedAudioPlayer implements AudioPlayer {
 	public void pause() {
 		audioEffectManager.fadeTo(0, FADE_MILLIS, (() -> {
 			vlcPlayerAdapter.pause();
+			vlcPlayerAdapter.setGain(gain);
 		}), vlcPlayerAdapter);
 	}
 
 	@Override
 	public void resume() {
 		vlcPlayerAdapter.setGain(0);
-		audioEffectManager.fadeTo(gain, FADE_MILLIS, vlcPlayerAdapter);
+		executor.schedule(() -> {
+			audioEffectManager.fadeTo(gain, FADE_MILLIS, vlcPlayerAdapter);
+		}, 500, TimeUnit.MILLISECONDS);
 		vlcPlayerAdapter.resume();
 	}
 

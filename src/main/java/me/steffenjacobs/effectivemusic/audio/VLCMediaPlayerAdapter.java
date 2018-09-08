@@ -75,7 +75,9 @@ public class VLCMediaPlayerAdapter implements AudioPlayer, InitializingBean {
 	}
 
 	/**
-	 * @param value:
+	 * ! ATTENTION: THIS FUNCTION WORKS ASNYC!
+	 * 
+	 * @param value
 	 *            volume between 0 and 200
 	 */
 	@Override
