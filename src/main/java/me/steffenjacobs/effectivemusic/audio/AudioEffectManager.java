@@ -21,10 +21,8 @@ public class AudioEffectManager implements FadeCompleteListener {
 
 		final double initialGain = audioPlayer.getGain();
 
-		if (targetGain == initialGain) {
-			if (!fading.get()) {
-				return;
-			}
+		if (targetGain == initialGain && !fading.get()) {
+			return;
 		}
 
 		Fade fadeIP;

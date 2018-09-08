@@ -149,7 +149,7 @@ public class AudioPlayerManager implements InitializingBean {
 			@Override
 			public void onFinish() {
 				if (!ignoreNextStopFinishEvent.getAndSet(false)) {
-					listeners.forEach(l -> l.onFinish());
+					listeners.forEach(AudioPlayerListener::onFinish);
 				}
 			}
 		};

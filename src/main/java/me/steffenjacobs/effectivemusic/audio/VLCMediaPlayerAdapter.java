@@ -39,7 +39,7 @@ public class VLCMediaPlayerAdapter implements AudioPlayer, InitializingBean {
 		currentlyPlayed = metadata;
 		mediaPlayer.playMedia(metadata.getPath());
 		status = Status.PLAYING;
-		LOG.info("playing " + metadata!=null && metadata.getTrackDTO() != null ? metadata.getTrackDTO().getTitle() : "");
+		LOG.info("playing " + metadata != null && metadata.getTrackDTO() != null ? metadata.getTrackDTO().getTitle() : "");
 		return currentlyPlayed;
 	}
 

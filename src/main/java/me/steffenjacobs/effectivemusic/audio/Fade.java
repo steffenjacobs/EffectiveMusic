@@ -80,7 +80,7 @@ public class Fade {
 					t.cancel();
 					player.setGain(targetGain.get());
 
-					listeners.forEach(l -> l.onFadeComplete());
+					listeners.forEach(FadeCompleteListener::onFadeComplete);
 					LOG.info("Fade complete");
 				}
 			}
