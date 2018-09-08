@@ -125,7 +125,7 @@ public class PlaylistManager {
 	public void setLoopStatus(LOOP_STATUS loopStatus) {
 		this.loopStatus = loopStatus;
 	}
-	
+
 	public LOOP_STATUS getLoopStatus() {
 		return loopStatus;
 	}
@@ -174,5 +174,16 @@ public class PlaylistManager {
 		this.playlist.clear();
 		audioPlayerManager.stop();
 		skip.set(false);
+	}
+
+	public void playPosition(int position) {
+		if (position <= playlist.size() - 1) {
+			skip.set(true);
+			currentIndex = position;
+			audioPlayerManager.playAudio(playlist.get(currentIndex));
+			skip.set(false);
+		} else {
+			throw new IndexOutOfBoundsException("Element #" + position + " does not exist in the current playlist!");
+		}
 	}
 }

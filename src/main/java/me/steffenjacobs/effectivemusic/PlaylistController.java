@@ -79,6 +79,12 @@ public class PlaylistController {
 		return new ResponseEntity<String>("started playlist", HttpStatus.OK);
 	}
 
+	@PostMapping(value = "/music/playlist/position", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public ResponseEntity<String> gotoPosition(int position) {
+		playlistManager.playPosition(position);
+		return new ResponseEntity<String>("jumped to track #" + position, HttpStatus.OK);
+	}
+
 	@GetMapping(value = "/music/playlist")
 	public ResponseEntity<TrackMetadataList> getPlaylist() {
 		return new ResponseEntity<TrackMetadataList>(new TrackMetadataList(playlistManager.getPlaylist()), HttpStatus.OK);
