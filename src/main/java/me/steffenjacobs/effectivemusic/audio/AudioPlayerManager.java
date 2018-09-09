@@ -171,7 +171,7 @@ public class AudioPlayerManager implements InitializingBean {
 		return dto;
 	}
 
-	private boolean isMute() {
+	public boolean isMute() {
 		return currentPlayer.isMute();
 	}
 

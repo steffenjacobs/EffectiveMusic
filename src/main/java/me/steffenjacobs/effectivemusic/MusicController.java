@@ -132,7 +132,7 @@ public class MusicController {
 		dto.setStatus(audioPlayerManager.getStatus().toString());
 		dto.setVolume(audioPlayerManager.getGain());
 		dto.setLoopStatus(playlistManager.getLoopStatus().getValue());
-		dto.setMute(false);
+		dto.setMute(audioPlayerManager.isMute());
 		return new ResponseEntity<>(dto, HttpStatus.OK);
 
 	}
