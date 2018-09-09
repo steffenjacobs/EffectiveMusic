@@ -126,4 +126,14 @@ public class VLCMediaPlayerAdapter implements AudioPlayer, InitializingBean {
 			}
 		});
 	}
+
+	@Override
+	public boolean isMute() {
+		return mediaPlayer.mute();
+	}
+
+	@Override
+	public void setMute(boolean mute) {
+		mediaPlayer.mute(mute);
+	}
 }

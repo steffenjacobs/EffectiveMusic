@@ -137,4 +137,10 @@ public class MusicController {
 
 	}
 
+	@PostMapping(value = "/music/mute")
+	public ResponseEntity<String> mute(boolean mute) {
+		audioPlayerManager.setMute(mute);
+		return new ResponseEntity<>("set mute to: " + mute, HttpStatus.OK);
+	}
+
 }

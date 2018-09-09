@@ -167,7 +167,16 @@ public class AudioPlayerManager implements InitializingBean {
 		LiveTrackDTO dto = new LiveTrackDTO(getTrackInformation());
 		dto.setPosition(getPosition());
 		dto.setVolume(getGain());
+		dto.setMute(isMute());
 		return dto;
+	}
+
+	private boolean isMute() {
+		return currentPlayer.isMute();
+	}
+
+	public void setMute(boolean mute) {
+		currentPlayer.setMute(mute);
 	}
 
 }

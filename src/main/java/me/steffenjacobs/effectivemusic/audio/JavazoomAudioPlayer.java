@@ -28,6 +28,7 @@ public class JavazoomAudioPlayer implements AudioPlayer, InitializingBean {
 	private TrackMetadata metadata;
 
 	private AtomicBoolean suppressEvent = new AtomicBoolean(false);
+	private boolean mute = false;
 
 	@Override
 	public TrackMetadata playAudio(TrackMetadata metadata) throws AudioException {
@@ -189,5 +190,30 @@ public class JavazoomAudioPlayer implements AudioPlayer, InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		player = new ImprovedBasicPlayer();
+	}
+
+	@Override
+	public boolean isMute() {
+		return mute;
+	}
+
+	@Override
+	public void setMute(boolean mute) {
+		if(this.mute && !mute){
+			this.mute = false;
+			try {
+				player.setGain(this.volume);
+			} catch (BasicPlayerException e) {
+				e.printStackTrace();
+			}
+		}
+		else if (!this.mute && mute){
+			this.mute = true;
+			try {
+				player.setGain(0);
+			} catch (BasicPlayerException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

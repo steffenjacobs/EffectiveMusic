@@ -101,4 +101,15 @@ public class DualAudioPlayer implements AudioPlayer, InitializingBean {
 		player1.addListener(listener);
 		player2.addListener(listener);
 	}
+
+	@Override
+	public boolean isMute() {
+		return currentPlayer.isMute();
+	}
+
+	@Override
+	public void setMute(boolean mute) {
+		player1.setMute(mute);
+		player2.setMute(mute);
+	}
 }

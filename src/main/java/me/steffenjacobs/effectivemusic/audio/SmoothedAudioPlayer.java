@@ -101,4 +101,14 @@ public class SmoothedAudioPlayer implements AudioPlayer {
 	public void addListener(AudioPlayerListener listener) {
 		vlcPlayerAdapter.addListener(listener);
 	}
+
+	@Override
+	public boolean isMute() {
+		return vlcPlayerAdapter.isMute();
+	}
+
+	@Override
+	public void setMute(boolean mute) {
+		vlcPlayerAdapter.setMute(mute);
+	}
 }

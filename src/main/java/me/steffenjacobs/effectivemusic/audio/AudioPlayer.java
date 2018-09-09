@@ -26,4 +26,7 @@ public interface AudioPlayer {
 
 	void addListener(AudioPlayerListener listener);
 
+	boolean isMute();
+
+	void setMute(boolean mute);
 }

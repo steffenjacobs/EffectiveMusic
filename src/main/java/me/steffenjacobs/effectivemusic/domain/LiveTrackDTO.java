@@ -4,9 +4,10 @@ package me.steffenjacobs.effectivemusic.domain;
 public class LiveTrackDTO extends TrackDTO {
 
 	private double position, volume;
+	private boolean mute;
 
 	public LiveTrackDTO(TrackDTO copy) {
-		if(copy==null) {
+		if (copy == null) {
 			return;
 		}
 		artist = copy.getArtist();
@@ -36,4 +37,13 @@ public class LiveTrackDTO extends TrackDTO {
 	public void setVolume(double volume) {
 		this.volume = volume;
 	}
+
+	public boolean isMute() {
+		return mute;
+	}
+
+	public void setMute(boolean mute) {
+		this.mute = mute;
+	}
+
 }
