@@ -87,7 +87,7 @@ public class PlaylistController {
 
 	@GetMapping(value = "/music/playlist")
 	public ResponseEntity<TrackMetadataList> getPlaylist() {
-		return new ResponseEntity<TrackMetadataList>(new TrackMetadataList(playlistManager.getPlaylist(), playlistManager.getLoopStatus().getValue()), HttpStatus.OK);
+		return new ResponseEntity<TrackMetadataList>(new TrackMetadataList(playlistManager.getPlaylist(), playlistManager.getLoopStatus().getValue(), playlistManager.getCurrentIndex()), HttpStatus.OK);
 	}
 
 }

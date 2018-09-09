@@ -201,4 +201,8 @@ public class PlaylistManager {
 			throw new IndexOutOfBoundsException("Element #" + position + " does not exist in the current playlist!");
 		}
 	}
+
+	public int getCurrentIndex() {
+		return currentIndex;
+	}
 }

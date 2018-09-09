@@ -8,12 +8,15 @@ public class TrackMetadataList {
 
 	int repeatLoopStatus;
 
+	int currentIndex;
+
 	public TrackMetadataList() {
 	}
 
-	public TrackMetadataList(List<TrackMetadata> tracks, int repeatLoopStatus) {
+	public TrackMetadataList(List<TrackMetadata> tracks, int repeatLoopStatus, int currentIndex) {
 		this.tracks = tracks;
 		this.repeatLoopStatus = repeatLoopStatus;
+		this.currentIndex = currentIndex;
 	}
 
 	public void setTracks(List<TrackMetadata> tracks) {
@@ -30,6 +33,14 @@ public class TrackMetadataList {
 
 	public void setRepeatLoopStatus(int repeatLoopStatus) {
 		this.repeatLoopStatus = repeatLoopStatus;
+	}
+
+	public int getCurrentIndex() {
+		return currentIndex;
+	}
+
+	public void setCurrentIndex(int currentIndex) {
+		this.currentIndex = currentIndex;
 	}
 
 }
