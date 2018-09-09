@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import me.steffenjacobs.effectivemusic.OutgoingStatisticsService;
 import me.steffenjacobs.effectivemusic.domain.LiveTrackDTO;
 import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
@@ -33,6 +34,9 @@ public class AudioPlayerManager implements InitializingBean {
 
 	@Autowired
 	JavazoomAudioPlayer javazoomAudioPlayer;
+	
+	@Autowired
+	OutgoingStatisticsService outgoingStatisticsService;
 
 	private AudioPlayer currentPlayer;
 
@@ -63,6 +67,7 @@ public class AudioPlayerManager implements InitializingBean {
 			currentlyPlayed = vlcPlayer.playAudio(metadata);
 			currentPlayer = vlcPlayer;
 		}
+		outgoingStatisticsService.sendUpdateStatisticInfoIfAvailable(metadata);
 	}
 
 	private void stopSilent() {
