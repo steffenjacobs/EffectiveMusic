@@ -30,7 +30,7 @@ import uk.co.caprica.vlcj.player.MediaPlayer;
 public class PlaylistManager {
 
 	public static enum LOOP_STATUS {
-		LOOP_ONE(1), LOOP_ALL(2), NO_LOOP(0);
+		LOOP_ONE(1), LOOP_ALL(2), NO_LOOP(0), SHUFFLE(3);
 
 		private final int value;
 
@@ -44,6 +44,8 @@ public class PlaylistManager {
 				return LOOP_ONE;
 			case 2:
 				return LOOP_ALL;
+			case 3:
+				return SHUFFLE;
 			default:
 				return NO_LOOP;
 			}
@@ -96,9 +98,16 @@ public class PlaylistManager {
 		}
 	}
 
+	private void playRandomTrackFromPlaylist() {
+		currentIndex = (int) (playlist.size() * Math.random());
+		audioPlayerManager.playAudio(playlist.get(currentIndex));
+	}
+
 	public void playNext() {
 		skip.set(true);
-		if (currentIndex + 1 <= playlist.size() - 1) {
+		if (loopStatus == LOOP_STATUS.SHUFFLE) {
+			playRandomTrackFromPlaylist();
+		} else if (currentIndex + 1 <= playlist.size() - 1) {
 			audioPlayerManager.playAudio(playlist.get(++currentIndex));
 		} else if (loopStatus == LOOP_STATUS.LOOP_ALL) {
 			currentIndex = 0;
@@ -109,7 +118,9 @@ public class PlaylistManager {
 
 	public void playPrevious() {
 		skip.set(true);
-		if (currentIndex - 1 >= 0) {
+		if (loopStatus == LOOP_STATUS.SHUFFLE) {
+			playRandomTrackFromPlaylist();
+		} else if (currentIndex - 1 >= 0) {
 			audioPlayerManager.playAudio(playlist.get(--currentIndex));
 		} else if (loopStatus == LOOP_STATUS.LOOP_ALL) {
 			currentIndex = playlist.size() - 1;
@@ -131,8 +142,12 @@ public class PlaylistManager {
 	}
 
 	public void startPlaylist() {
-		currentIndex = 0;
-		audioPlayerManager.playAudio(playlist.get(currentIndex));
+		if (loopStatus == LOOP_STATUS.SHUFFLE) {
+			playRandomTrackFromPlaylist();
+		} else {
+			currentIndex = 0;
+			audioPlayerManager.playAudio(playlist.get(currentIndex));
+		}
 	}
 
 	@EventListener(ApplicationReadyEvent.class)
