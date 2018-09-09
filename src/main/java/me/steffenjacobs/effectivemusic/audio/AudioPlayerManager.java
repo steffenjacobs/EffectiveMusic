@@ -34,7 +34,7 @@ public class AudioPlayerManager implements InitializingBean {
 
 	@Autowired
 	JavazoomAudioPlayer javazoomAudioPlayer;
-	
+
 	@Autowired
 	OutgoingStatisticsService outgoingStatisticsService;
 
@@ -45,7 +45,7 @@ public class AudioPlayerManager implements InitializingBean {
 	private List<AudioPlayerListener> listeners = new CopyOnWriteArrayList<>();
 
 	private AtomicBoolean ignoreNextStopFinishEvent = new AtomicBoolean(false);
-	
+
 	public void playAudio(TrackMetadata metadata) {
 		currentlyPlayed = metadata;
 		try {
@@ -131,24 +131,24 @@ public class AudioPlayerManager implements InitializingBean {
 		final AudioPlayerListener listener = new AudioPlayerListener() {
 			@Override
 			public void onStart() {
-				listeners.forEach(l -> l.onStart());
+				listeners.forEach(AudioPlayerListener::onStart);
 			}
 
 			@Override
 			public void onStop() {
 				if (!ignoreNextStopFinishEvent.getAndSet(false)) {
-					listeners.forEach(l -> l.onStop());
+					listeners.forEach(AudioPlayerListener::onStop);
 				}
 			}
 
 			@Override
 			public void onPause() {
-				listeners.forEach(l -> l.onPause());
+				listeners.forEach(AudioPlayerListener::onPause);
 			}
 
 			@Override
 			public void onResume() {
-				listeners.forEach(l -> l.onResume());
+				listeners.forEach(AudioPlayerListener::onResume);
 			}
 
 			@Override
