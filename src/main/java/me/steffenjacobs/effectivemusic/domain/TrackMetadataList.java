@@ -6,11 +6,14 @@ import java.util.List;
 public class TrackMetadataList {
 	List<TrackMetadata> tracks;
 
+	int repeatLoopStatus;
+
 	public TrackMetadataList() {
 	}
 
-	public TrackMetadataList(List<TrackMetadata> tracks) {
+	public TrackMetadataList(List<TrackMetadata> tracks, int repeatLoopStatus) {
 		this.tracks = tracks;
+		this.repeatLoopStatus = repeatLoopStatus;
 	}
 
 	public void setTracks(List<TrackMetadata> tracks) {
@@ -19,6 +22,14 @@ public class TrackMetadataList {
 
 	public List<TrackMetadata> getTracks() {
 		return tracks;
+	}
+
+	public int getRepeatLoopStatus() {
+		return repeatLoopStatus;
+	}
+
+	public void setRepeatLoopStatus(int repeatLoopStatus) {
+		this.repeatLoopStatus = repeatLoopStatus;
 	}
 
 }

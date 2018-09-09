@@ -49,7 +49,7 @@ public class PlaylistController {
 		return new ResponseEntity<String>("Removed file from playlist: " + index + " - " + val, HttpStatus.ACCEPTED);
 	}
 
-	/** no loop: 0, loop once: 1, loop all: 2, shuffle: 3;*/
+	/** no loop: 0, loop once: 1, loop all: 2, shuffle: 3; */
 	@PostMapping(value = "/music/playlist/loop", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ResponseEntity<String> setLoopAll(int value) {
 		playlistManager.setLoopStatus(LOOP_STATUS.fromValue(value));
@@ -87,7 +87,7 @@ public class PlaylistController {
 
 	@GetMapping(value = "/music/playlist")
 	public ResponseEntity<TrackMetadataList> getPlaylist() {
-		return new ResponseEntity<TrackMetadataList>(new TrackMetadataList(playlistManager.getPlaylist()), HttpStatus.OK);
+		return new ResponseEntity<TrackMetadataList>(new TrackMetadataList(playlistManager.getPlaylist(), playlistManager.getLoopStatus().getValue()), HttpStatus.OK);
 	}
 
 }
