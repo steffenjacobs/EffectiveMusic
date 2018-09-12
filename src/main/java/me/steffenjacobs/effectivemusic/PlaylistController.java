@@ -22,7 +22,7 @@ import me.steffenjacobs.effectivemusic.youtube.YoutubeNotAvailableException;
 /** @author Steffen Jacobs */
 @Controller
 public class PlaylistController {
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(PlaylistController.class);
 
 	@Autowired
@@ -37,7 +37,7 @@ public class PlaylistController {
 	@PostMapping(value = "/music/playlist/enquene", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ResponseEntity<String> enquene(String[] path) throws MalformedURLException, YoutubeNotAvailableException {
 		for (String p : path) {
-			
+
 			if (base64Service.isBase64(p)) {
 				p = base64Service.decode(p);
 			}
@@ -47,14 +47,17 @@ public class PlaylistController {
 				playlistManager.queue(new TrackMetadata(p));
 			}
 			LOG.info("Added {} to playlist.", p);
-		}		
+		}
 		return new ResponseEntity<>(HttpStatus.ACCEPTED);
 	}
 
 	@PostMapping(value = "/music/playlist/dequene", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public ResponseEntity<String> dequene(int index) {
-		boolean val = playlistManager.dequeue(index);
-		return new ResponseEntity<String>("Removed file from playlist: " + index + " - " + val, HttpStatus.ACCEPTED);
+	public ResponseEntity<String> dequene(String[] index) {
+		for (String i : index) {
+			playlistManager.dequeue(Integer.parseInt(i));
+			LOG.info("Removed #{} from playlist.", i);
+		}
+		return new ResponseEntity<>("", HttpStatus.ACCEPTED);
 	}
 
 	/** no loop: 0, loop once: 1, loop all: 2, shuffle: 3; */
