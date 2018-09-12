@@ -1,6 +1,7 @@
 package me.steffenjacobs.effectivemusic;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,8 +62,6 @@ public class PlaylistManager {
 	private static final long DELAY_NEXT_SONG_MILLIS = 500;
 	private static final boolean PLAY_IMMEDIATELY = true;
 
-	private static final String DEFAULT_PLAYLIST_LOCATION = "./Playlists/";
-
 	private LOOP_STATUS loopStatus = LOOP_STATUS.LOOP_ALL;
 
 	private final List<TrackMetadata> playlist = new ArrayList<>();
@@ -77,6 +76,9 @@ public class PlaylistManager {
 
 	@Autowired
 	PlaylistStorageService playlistStorageService;
+	
+	@Autowired
+	SettingsService settingsService;
 
 	public void queue(TrackMetadata track) {
 		if (track.getTrackDTO() == null) {
@@ -191,6 +193,7 @@ public class PlaylistManager {
 				handler.finished(null);
 			}
 		});
+		settingsService.loadSettings();
 	}
 
 	public void clearPlaylist() {
@@ -239,10 +242,21 @@ public class PlaylistManager {
 	}
 
 	public void saveCurrentPlaylist() throws IOException {
-		savePlaylist(DEFAULT_PLAYLIST_LOCATION + playlistName + ".M3U");
+		savePlaylist(settingsService.getPlaylistDefaultLocation() + playlistName + ".M3U");
 	}
 
 	public void setPlaylistName(String name) {
 		playlistName = name;
+	}
+
+	public void setDefaultPlaylistLocation(String path) throws FileNotFoundException {
+		if (!new File(path).exists()) {
+			throw new FileNotFoundException(path);
+		}
+		settingsService.setPlaylistDefaultLocation(path.endsWith("/") ? path : (path + "/"));
+	}
+
+	public String getDefaultPlaylistLocation() {
+		return settingsService.getPlaylistDefaultLocation();
 	}
 }

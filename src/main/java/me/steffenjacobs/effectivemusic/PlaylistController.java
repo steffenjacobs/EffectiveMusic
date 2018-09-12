@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import me.steffenjacobs.effectivemusic.PlaylistManager.LOOP_STATUS;
+import me.steffenjacobs.effectivemusic.domain.SettingsDTO;
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
 import me.steffenjacobs.effectivemusic.domain.TrackMetadataList;
 import me.steffenjacobs.effectivemusic.util.Base64Service;
@@ -136,6 +137,18 @@ public class PlaylistController {
 		playlistManager.loadPlaylist(path);
 		LOG.info("Loaded playlist from {}.", path);
 		return new ResponseEntity<>("loaded playlist from " + path, HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/music/playlist/location", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public ResponseEntity<String> setDefaultPlaylistLocation(String path) throws IOException {
+		playlistManager.setDefaultPlaylistLocation(path);
+		LOG.info("set playlist location to {}.", path);
+		return new ResponseEntity<>("set playlist location to " + path, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/music/playlist/location")
+	public ResponseEntity<SettingsDTO> getDefaultPlaylistLocation() {
+		return new ResponseEntity<>(new SettingsDTO(playlistManager.getDefaultPlaylistLocation()), HttpStatus.OK);
 	}
 
 }
