@@ -227,9 +227,9 @@ public class PlaylistManager {
 	}
 
 	public void loadPlaylist(String path) throws IOException {
+		Pair<String, List<String>> list = playlistStorageService.loadPlaylist(path);
 		playlist.clear();
 		currentIndex = -1;
-		Pair<String, List<String>> list = playlistStorageService.loadPlaylist(path);
 		playlistName = list.getX();
 		list.getY().forEach(p -> queue(new TrackMetadata(p)));
 	}
