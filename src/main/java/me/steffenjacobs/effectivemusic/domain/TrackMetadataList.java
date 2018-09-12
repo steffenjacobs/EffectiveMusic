@@ -10,13 +10,24 @@ public class TrackMetadataList {
 
 	int currentIndex;
 
+	String playlistName;
+
 	public TrackMetadataList() {
 	}
 
-	public TrackMetadataList(List<TrackMetadata> tracks, int repeatLoopStatus, int currentIndex) {
+	public TrackMetadataList(List<TrackMetadata> tracks, int repeatLoopStatus, int currentIndex, String playlistName) {
 		this.tracks = tracks;
 		this.repeatLoopStatus = repeatLoopStatus;
 		this.currentIndex = currentIndex;
+		this.playlistName = playlistName;
+	}
+
+	public String getPlaylistName() {
+		return playlistName;
+	}
+
+	public void setPlaylistName(String playlistName) {
+		this.playlistName = playlistName;
 	}
 
 	public void setTracks(List<TrackMetadata> tracks) {

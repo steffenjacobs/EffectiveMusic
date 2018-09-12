@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.apache.commons.io.FilenameUtils;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
@@ -23,6 +24,7 @@ import me.steffenjacobs.effectivemusic.audio.AudioPlayerManager;
 import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackDTO;
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
+import me.steffenjacobs.effectivemusic.util.Pair;
 import uk.co.caprica.vlcj.player.MediaPlayer;
 
 /** @author Steffen Jacobs */
@@ -66,8 +68,13 @@ public class PlaylistManager {
 
 	private AtomicBoolean skip = new AtomicBoolean(false);
 
+	private String playlistName = "Unnamed Playlist";
+
 	@Autowired
 	AudioPlayerManager audioPlayerManager;
+
+	@Autowired
+	PlaylistStorageService playlistStorageService;
 
 	public void queue(TrackMetadata track) {
 		if (track.getTrackDTO() == null) {
@@ -204,5 +211,28 @@ public class PlaylistManager {
 
 	public int getCurrentIndex() {
 		return currentIndex;
+	}
+
+	public void createNewPlaylist() {
+		playlistName = "Unnamed Playlist";
+		playlist.clear();
+		currentIndex = -1;
+	}
+
+	public void savePlaylist(String path) throws IOException {
+		playlistName = FilenameUtils.removeExtension(new File(path).getName());
+		playlistStorageService.savePlaylist(path, playlist);
+	}
+
+	public void loadPlaylist(String path) throws IOException {
+		playlist.clear();
+		currentIndex = -1;
+		Pair<String, List<String>> list = playlistStorageService.loadPlaylist(path);
+		playlistName = list.getX();
+		list.getY().forEach(p -> queue(new TrackMetadata(p)));
+	}
+
+	public String getPlaylistName() {
+		return playlistName;
 	}
 }

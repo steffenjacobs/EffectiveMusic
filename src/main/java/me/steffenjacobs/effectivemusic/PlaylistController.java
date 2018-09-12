@@ -1,5 +1,6 @@
 package me.steffenjacobs.effectivemusic;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 
 import org.slf4j.Logger;
@@ -98,8 +99,20 @@ public class PlaylistController {
 
 	@GetMapping(value = "/music/playlist")
 	public ResponseEntity<TrackMetadataList> getPlaylist() {
-		return new ResponseEntity<TrackMetadataList>(
-				new TrackMetadataList(playlistManager.getPlaylist(), playlistManager.getLoopStatus().getValue(), playlistManager.getCurrentIndex()), HttpStatus.OK);
+		return new ResponseEntity<>(new TrackMetadataList(playlistManager.getPlaylist(), playlistManager.getLoopStatus().getValue(), playlistManager.getCurrentIndex(),
+				playlistManager.getPlaylistName()), HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/music/playlist/save", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public ResponseEntity<String> savePlaylist(String path) throws IOException {
+		playlistManager.savePlaylist(path);
+		return new ResponseEntity<>("saved playlist to " + path, HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/music/playlist/load", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public ResponseEntity<String> loadPlaylist(String path) throws IOException {
+		playlistManager.loadPlaylist(path);
+		return new ResponseEntity<>("loaded playlist from " + path, HttpStatus.OK);
 	}
 
 }
