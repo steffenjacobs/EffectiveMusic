@@ -76,7 +76,7 @@ public class PlaylistManager {
 
 	@Autowired
 	PlaylistStorageService playlistStorageService;
-	
+
 	@Autowired
 	SettingsService settingsService;
 
@@ -92,8 +92,13 @@ public class PlaylistManager {
 
 	public TrackDTO getTrackInfo(String path) {
 		try {
-			AudioFile f = AudioFileIO.read(new File(path));
-			return new TrackDTO(f.getTag(), f.getAudioHeader().getTrackLength() * 1000);
+			final File audioFile = new File(path);
+			AudioFile f = AudioFileIO.read(audioFile);
+			TrackDTO dto = new TrackDTO(f.getTag(), f.getAudioHeader().getTrackLength() * 1000);
+			if (dto.getTitle() == null || "".equals(dto.getTitle())) {
+				dto.setTitle(FilenameUtils.removeExtension(audioFile.getName()));
+			}
+			return dto;
 		} catch (CannotReadException | IOException | TagException | ReadOnlyFileException | InvalidAudioFrameException e) {
 			e.printStackTrace();
 		}
