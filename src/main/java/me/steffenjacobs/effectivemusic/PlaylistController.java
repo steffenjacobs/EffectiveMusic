@@ -2,6 +2,8 @@ package me.steffenjacobs.effectivemusic;
 
 import java.net.MalformedURLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,6 +22,8 @@ import me.steffenjacobs.effectivemusic.youtube.YoutubeNotAvailableException;
 /** @author Steffen Jacobs */
 @Controller
 public class PlaylistController {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(PlaylistController.class);
 
 	@Autowired
 	PlaylistManager playlistManager;
@@ -31,16 +35,20 @@ public class PlaylistController {
 	Base64Service base64Service;
 
 	@PostMapping(value = "/music/playlist/enquene", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public ResponseEntity<String> enquene(String path) throws MalformedURLException, YoutubeNotAvailableException {
-		if (base64Service.isBase64(path)) {
-			path = base64Service.decode(path);
-		}
-		if (path.startsWith("https://www.youtube.com/watch?v=")) {
-			playlistManager.queue(youtubeManager.getPlaybackUrl(path));
-		} else {
-			playlistManager.queue(new TrackMetadata(path));
-		}
-		return new ResponseEntity<String>("Added file to playlist: " + path, HttpStatus.ACCEPTED);
+	public ResponseEntity<String> enquene(String[] path) throws MalformedURLException, YoutubeNotAvailableException {
+		for (String p : path) {
+			
+			if (base64Service.isBase64(p)) {
+				p = base64Service.decode(p);
+			}
+			if (p.startsWith("https://www.youtube.com/watch?v=")) {
+				playlistManager.queue(youtubeManager.getPlaybackUrl(p));
+			} else {
+				playlistManager.queue(new TrackMetadata(p));
+			}
+			LOG.info("Added {} to playlist.", p);
+		}		
+		return new ResponseEntity<>(HttpStatus.ACCEPTED);
 	}
 
 	@PostMapping(value = "/music/playlist/dequene", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -87,7 +95,8 @@ public class PlaylistController {
 
 	@GetMapping(value = "/music/playlist")
 	public ResponseEntity<TrackMetadataList> getPlaylist() {
-		return new ResponseEntity<TrackMetadataList>(new TrackMetadataList(playlistManager.getPlaylist(), playlistManager.getLoopStatus().getValue(), playlistManager.getCurrentIndex()), HttpStatus.OK);
+		return new ResponseEntity<TrackMetadataList>(
+				new TrackMetadataList(playlistManager.getPlaylist(), playlistManager.getLoopStatus().getValue(), playlistManager.getCurrentIndex()), HttpStatus.OK);
 	}
 
 }
