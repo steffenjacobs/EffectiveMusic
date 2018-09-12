@@ -106,12 +106,35 @@ public class PlaylistController {
 	@PostMapping(value = "/music/playlist/save", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ResponseEntity<String> savePlaylist(String path) throws IOException {
 		playlistManager.savePlaylist(path);
+		LOG.info("Saved playlist to {}. ", path);
 		return new ResponseEntity<>("saved playlist to " + path, HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/music/playlist/name", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public ResponseEntity<String> setPlaylistName(String name) throws IOException {
+		playlistManager.setPlaylistName(name);
+		LOG.info("Renamed playlist to {}. ", name);
+		return new ResponseEntity<>("renamed playlist to " + name, HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/music/playlist/create", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public ResponseEntity<String> createNewPlaylist(String name) throws IOException {
+		playlistManager.createNewPlaylist(name);
+		LOG.info("Created new playlist '{}'", playlistManager.getPlaylistName());
+
+		return new ResponseEntity<>("Created new empty playlist. " + name, HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/music/playlist/save/current", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public ResponseEntity<String> saveCurrentPlaylist() throws IOException {
+		playlistManager.saveCurrentPlaylist();
+		return new ResponseEntity<>("Saved current playlist.", HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/music/playlist/load", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ResponseEntity<String> loadPlaylist(String path) throws IOException {
 		playlistManager.loadPlaylist(path);
+		LOG.info("Loaded playlist from {}.", path);
 		return new ResponseEntity<>("loaded playlist from " + path, HttpStatus.OK);
 	}
 

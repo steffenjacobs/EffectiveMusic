@@ -61,6 +61,8 @@ public class PlaylistManager {
 	private static final long DELAY_NEXT_SONG_MILLIS = 500;
 	private static final boolean PLAY_IMMEDIATELY = true;
 
+	private static final String DEFAULT_PLAYLIST_LOCATION = "./Playlists/";
+
 	private LOOP_STATUS loopStatus = LOOP_STATUS.LOOP_ALL;
 
 	private final List<TrackMetadata> playlist = new ArrayList<>();
@@ -213,8 +215,8 @@ public class PlaylistManager {
 		return currentIndex;
 	}
 
-	public void createNewPlaylist() {
-		playlistName = "Unnamed Playlist";
+	public void createNewPlaylist(String name) {
+		playlistName = (name == null || "".equals(name)) ? "Unnamed Playlist" : name;
 		playlist.clear();
 		currentIndex = -1;
 	}
@@ -234,5 +236,13 @@ public class PlaylistManager {
 
 	public String getPlaylistName() {
 		return playlistName;
+	}
+
+	public void saveCurrentPlaylist() throws IOException {
+		savePlaylist(DEFAULT_PLAYLIST_LOCATION + playlistName + ".M3U");
+	}
+
+	public void setPlaylistName(String name) {
+		playlistName = name;
 	}
 }
