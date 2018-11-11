@@ -6,14 +6,12 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.sun.jna.NativeLibrary;
-
 import me.steffenjacobs.effectivemusic.VLCPlayerEventHandler;
 import me.steffenjacobs.effectivemusic.domain.Status;
 import me.steffenjacobs.effectivemusic.domain.TrackMetadata;
 import uk.co.caprica.vlcj.component.AudioMediaPlayerComponent;
+import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.player.MediaPlayer;
-import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
 /** @author Steffen Jacobs */
 
@@ -22,8 +20,6 @@ import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 public class VLCMediaPlayerAdapter implements AudioPlayer, InitializingBean {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AudioPlayer.class);
-
-	private static final String NATIVE_LIBRARY_SEARCH_PATH = "C:\\Program Files\\VideoLAN\\VLC";
 
 	private MediaPlayer mediaPlayer;
 
@@ -111,7 +107,8 @@ public class VLCMediaPlayerAdapter implements AudioPlayer, InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), NATIVE_LIBRARY_SEARCH_PATH);
+		try{
+		LOG.info(new NativeDiscovery().discover() ? "Library found" : "No library found!");
 		mediaPlayer = new AudioMediaPlayerComponent().getMediaPlayer();
 		mediaPlayer.addMediaPlayerEventListener(new VLCPlayerEventHandler() {
 			@Override
@@ -125,6 +122,10 @@ public class VLCMediaPlayerAdapter implements AudioPlayer, InitializingBean {
 				currentlyPlayed.getTrackDTO().setLength(mediaPlayer.getLength());
 			}
 		});
+		}
+		catch(UnsatisfiedLinkError e){
+			LOG.error("Could not load VLC4J Library: {}", e.getMessage());
+		}
 	}
 
 	@Override

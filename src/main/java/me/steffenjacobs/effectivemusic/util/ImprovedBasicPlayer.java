@@ -525,7 +525,7 @@ public class ImprovedBasicPlayer implements BasicController, Runnable {
 	}
 
 	/**
-	 * Main loop.
+	 * AudioDeviceSelector loop.
 	 *
 	 * Player Status == STOPPED || SEEKING => End of Thread + Freeing Audio
 	 * Ressources.<br>
@@ -538,7 +538,7 @@ public class ImprovedBasicPlayer implements BasicController, Runnable {
 		byte[] abData = new byte[EXTERNAL_BUFFER_SIZE];
 		// Lock stream while playing.
 		synchronized (m_audioInputStream) {
-			// Main play/pause loop.
+			// AudioDeviceSelector play/pause loop.
 			while ((nBytesRead != -1) && (m_status != STOPPED) && (m_status != SEEKING) && (m_status != UNKNOWN)) {
 				if (m_status == PLAYING) {
 					// Play.

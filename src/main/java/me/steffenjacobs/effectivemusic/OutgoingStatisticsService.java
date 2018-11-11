@@ -19,7 +19,7 @@ public class OutgoingStatisticsService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(OutgoingStatisticsService.class);
 
-	private static final String URL_STATISTIC_LISTENCOUNT = "http://localhost:8081/files/statistics/listencount";
+	private static final String URL_STATISTIC_LISTENCOUNT = "http://localhost:8181/files/statistics/listencount";
 
 	public void sendUpdateStatisticInfoIfAvailable(TrackMetadata metadata) {
 
